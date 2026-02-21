@@ -17,15 +17,15 @@ if (process.env.NODE_ENV !== "production") {
 
 //redis
 
-// const { RedisStore } = require("connect-redis");
-// const redisClient = require("./model/redis");
-// const redisStore = new RedisStore({
-//   client: redisClient,
-//   ttl: 60 * 60 * 24 * 3,
-// });
+const { RedisStore } = require("connect-redis");
+const redisClient = require("./model/redis");
+const redisStore = new RedisStore({
+  client: redisClient,
+  ttl: 60 * 60 * 24 * 3,
+});
 
 const sessionMiddleWare = session({
-  // store: redisStore,
+  store: redisStore,
   secret: process.env.SECRET_ID,
   resave: false,
   saveUninitialized: false,
