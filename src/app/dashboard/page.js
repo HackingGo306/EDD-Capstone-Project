@@ -1,15 +1,14 @@
 "use client";
 
-import Popup from "@/components/popup/popup";
 import styles from "./page.module.css";
+import AccountCard from "@/components/account card/accountCard";
 
 export default function Settings() {
 
   return (
       <div className={styles.page}>
         <div className={styles.Dashboard}>
-          <h1>hi cutie~~ &lt;3</h1>
-          <Popup />
+          <AccountCard />
         </div>
       </div>
   );
