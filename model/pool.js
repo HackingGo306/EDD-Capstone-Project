@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === "production") {
     database: process.env.MARIA_DATABASE,
     port: process.env.MARIA_PORT || 3306,
     ssl: {
-      ca: process.env.DATABASE_SSL_CA, // paste the full CA block from Aiven
+      ca: process.env.DATABASE_SSL_CA,
     },
 
     connectTimeout: 10000,
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "production") {
     waitForConnections: true,
     debug: false,
     charset: "utf8mb4",
-    idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
+    idleTimeout: 60000,
   });
 } else {
   console.log("Using development database configuration.");
@@ -37,8 +37,28 @@ if (process.env.NODE_ENV === "production") {
     waitForConnections: true,
     debug: false,
     charset: "utf8mb4",
-    idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
+    idleTimeout: 60000,
   });
 }
+
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error("Error connecting to the database:", err);
+  } else {
+    console.log("Connected to the MariaDB database.");
+
+    connection.execute(`
+      CREATE TABLE IF NOT EXISTS users (
+        user_id VARCHAR(10) NOT NULL PRIMARY KEY,
+        name VARCHAR(40),
+        email VARCHAR(60),
+        hashed_password VARCHAR(64),
+        salt VARCHAR(64)
+      )
+    `);
+
+    connection.release();
+  }
+});
 
 module.exports = pool;

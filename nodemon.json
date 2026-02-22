@@ -1,0 +1,4 @@
+{
+  "ignore": ["src/*", ".next/*"],
+  "ext": "js,json"
+}

@@ -39,13 +39,6 @@ const sessionMiddleWare = session({
 
 module.exports = { server, sessionMiddleWare };
 
-//API
-
-// const authAPI = require("./api/auth").Router;
-// const userAPI = require('./api/user').Router;
-// const aiAPI = require('./api/ai').Router;
-
-//middlewares
 
 //cors
 app.use(
@@ -81,7 +74,9 @@ const cspOptions = {
     frameSrc: ["'self'"],
   },
 };
-app.use(helmet.contentSecurityPolicy(cspOptions));
+if (process.env.NODE_ENV === "production") {
+  app.use(helmet.contentSecurityPolicy(cspOptions));
+}
 
 //body parser
 app.use(bodyParser.json());
@@ -91,10 +86,9 @@ app.use(cookieParser(process.env.SECRET_ID));
 
 app.use(sessionMiddleWare);
 
-//api
-// app.use("/auth", authAPI);
-// app.use('/user', userAPI);
-// app.use('/ai', aiAPI);
+//API
+const authAPI = require("./api/auth").Router;
+app.use("/auth", authAPI);
 
 app.head("/", (req, res) => {
   res.status(200).end();
@@ -112,7 +106,7 @@ nextApp.prepare().then(() => {
     return handle(req, res);
   });
 
-  server.listen(PORT, HOST, () => {
+  app.listen(PORT, HOST, () => {
     if (HOST) {
       console.log(`Server running at http://${HOST}:${PORT}`);
     } else {

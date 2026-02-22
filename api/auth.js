@@ -1,7 +1,7 @@
 const express = require("express");
 const Router = express.Router();
 const { DateTime } = require("luxon");
-const { generateRandomId, hashing } = require("../utils/tools");
+const { generateRandomId, hashing } = require("../utils/security");
 const crypto = require("node:crypto");
 const pool = require("../model/pool");
 const { USER_ID_COOKIE_OPTIONS } = require("../utils/constants");
