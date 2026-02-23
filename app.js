@@ -88,7 +88,9 @@ app.use(sessionMiddleWare);
 
 //API
 const authAPI = require("./api/auth").Router;
+const userAPI = require("./api/user").Router;
 app.use("/auth", authAPI);
+app.use("/user", userAPI);
 
 app.head("/", (req, res) => {
   res.status(200).end();

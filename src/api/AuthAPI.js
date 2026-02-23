@@ -18,13 +18,12 @@ async function postAuthSignin({ email, password }) {
   );
 }
 
-async function postAuthSignup({ name, email, password, timezone }) {
+async function postAuthSignup({ name, email, password }) {
   return requestHandler(
     AxiosInstance.post(`/auth/signup`, {
       name,
       email,
       password,
-      timezone,
     })
   );
 }

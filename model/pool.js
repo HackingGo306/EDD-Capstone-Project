@@ -53,7 +53,8 @@ pool.getConnection((err, connection) => {
         name VARCHAR(40),
         email VARCHAR(60),
         hashed_password VARCHAR(64),
-        salt VARCHAR(64)
+        salt VARCHAR(64),
+        created_at INT(10)
       )
     `);
 

@@ -14,7 +14,7 @@ async function autoSignin(
     return res.status(400).send({
       success: false,
       status: 400,
-      message: "Invalid User",
+      message: "Please log in",
       error: { reason: "No valid session or token found" },
     });
   }
@@ -170,6 +170,7 @@ Router.post("/signup", async (req, res) => {
   try {
     const { email, name, password } = req.body;
 
+    console.log("Signup request received with:", { email, name });
     // TODO: validate password strength
 
     const [salt, hashed_password] = hashing(password);
