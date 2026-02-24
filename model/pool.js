@@ -53,7 +53,20 @@ pool.getConnection((err, connection) => {
         name VARCHAR(40),
         email VARCHAR(60),
         hashed_password VARCHAR(64),
-        salt VARCHAR(64),
+        salt VARCHAR(64), 
+        created_at INT(10),
+        pets TEXT,
+        settings JSON
+      )
+    `);
+
+    connection.execute(`
+      CREATE TABLE IF NOT EXISTS pets (
+        pet_id VARCHAR(10) NOT NULL PRIMARY KEY,
+        name VARCHAR(40),
+        type VARCHAR(20),
+        water INT(10),
+        energy INT(10),
         created_at INT(10)
       )
     `);

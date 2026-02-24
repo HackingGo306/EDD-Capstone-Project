@@ -27,7 +27,7 @@ redisClient.on("connect", () => {
 });
 
 redisClient.on("error", (err) => {
-  // if (err.code == "ECONNRESET" || err.code == "EPIPE") return;
+  if (err.code == "ECONNRESET" || err.code == "EPIPE") return;
   console.error("Redis Error:", err);
 });
 

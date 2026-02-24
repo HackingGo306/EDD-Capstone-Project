@@ -41,7 +41,7 @@ export default function AccountCard() {
     }
     if (loginEmailRef.current) {
       loginEmailRef.current.value = "";
-      loginPasswordRef.current.value = "";
+      loginPasswordRef.current.value =  "";
     }
   }, [action]);
 
