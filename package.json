@@ -9,6 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/roboto": "^5.2.10",
+    "@mui/icons-material": "^7.3.8",
+    "@mui/material": "^7.3.8",
     "axios": "^1.13.5",
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
@@ -24,6 +29,7 @@
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-is": "^18.3.1",
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {

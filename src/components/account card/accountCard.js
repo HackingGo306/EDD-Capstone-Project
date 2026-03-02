@@ -5,6 +5,9 @@ import { getAuthLogout, postAuthSignin, postAuthSignup } from "@/api/AuthAPI";
 import { getUserInfo } from "@/api/UserAPI";
 import styles from "./accountCard.module.css";
 
+import TextField from '@mui/material/TextField';
+
+
 export default function AccountCard() {
 
   const [userInfo, setUserInfo] = useState(null);
@@ -41,7 +44,7 @@ export default function AccountCard() {
     }
     if (loginEmailRef.current) {
       loginEmailRef.current.value = "";
-      loginPasswordRef.current.value =  "";
+      loginPasswordRef.current.value = "";
     }
   }, [action]);
 
@@ -95,6 +98,13 @@ export default function AccountCard() {
             <input type="password" placeholder="Password" ref={loginPasswordRef} />
             <button onClick={handleLogin}>Login</button>
             <button onClick={() => setAction("register")}>Sign up</button>
+
+            <TextField
+              required
+              label="Email"
+              defaultValue=""
+              variant="filled"
+            />
           </div>
           :
           <div>
