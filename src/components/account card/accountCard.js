@@ -6,6 +6,7 @@ import { getUserInfo } from "@/api/UserAPI";
 import styles from "./accountCard.module.css";
 
 import TextField from '@mui/material/TextField';
+import { Button, Typography } from "@mui/material";
 
 
 export default function AccountCard() {
@@ -13,13 +14,13 @@ export default function AccountCard() {
   const [userInfo, setUserInfo] = useState(null);
   const [action, setAction] = useState("login");
 
-  const loginEmailRef = useRef(null);
-  const loginPasswordRef = useRef(null);
+  const [loginEmailValue, setLoginEmailValue] = useState("");
+  const [loginPasswordValue, setLoginPasswordValue] = useState("");
 
-  const usernameRef = useRef(null);
-  const passwordRef = useRef(null);
-  const passwordConfirmRef = useRef(null);
-  const emailRef = useRef(null);
+  const [usernameValue, setUsernameValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+  const [passwordConfirmValue, setPasswordConfirmValue] = useState("");
 
   const fetchUserInfo = useCallback(async () => {
     const userInfo = await getUserInfo();
@@ -36,21 +37,17 @@ export default function AccountCard() {
   }, []);
 
   useEffect(() => {
-    if (usernameRef.current) {
-      usernameRef.current.value = "";
-      passwordRef.current.value = "";
-      passwordConfirmRef.current.value = "";
-      emailRef.current.value = "";
-    }
-    if (loginEmailRef.current) {
-      loginEmailRef.current.value = "";
-      loginPasswordRef.current.value = "";
-    }
+    setUsernameValue("");
+    setPasswordValue("");
+    setPasswordConfirmValue("");
+    setEmailValue("");
+    setLoginEmailValue("");
+    setLoginPasswordValue("");
   }, [action]);
 
   const handleLogin = useCallback(async () => {
-    const email = loginEmailRef.current?.value;
-    const password = loginPasswordRef.current?.value;
+    const email = loginEmailValue;
+    const password = loginPasswordValue;
 
     console.log("Attempting login with:", { email, password });
 
@@ -61,13 +58,13 @@ export default function AccountCard() {
 
     await postAuthSignin({ email, password });
     fetchUserInfo();
-  }, [loginEmailRef, loginPasswordRef, fetchUserInfo]);
+  }, [loginEmailValue, loginPasswordValue, fetchUserInfo]);
 
   const handleRegister = useCallback(() => {
-    const username = usernameRef.current?.value;
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
-    const passwordConfirm = passwordConfirmRef.current?.value;
+    const username = usernameValue;
+    const email = emailValue;
+    const password = passwordValue;
+    const passwordConfirm = passwordConfirmValue;
 
     if (!username || !password || !passwordConfirm) {
       console.log("Username, password, or password confirmation is missing");
@@ -80,7 +77,7 @@ export default function AccountCard() {
 
     postAuthSignup({ email, name: username, password });
     setAction("login");
-  }, [usernameRef, emailRef, passwordRef, passwordConfirmRef, fetchUserInfo]);
+  }, [usernameValue, emailValue, passwordValue, passwordConfirmValue, fetchUserInfo]);
 
   const handleLogout = useCallback(() => {
     getAuthLogout();
@@ -90,35 +87,73 @@ export default function AccountCard() {
 
   return (
     <div className={styles.AccountCard}>
-      <h1>Account Card</h1>
       {action != "logged in" && <div>{
         action === "login" ?
-          <div>
-            <input type="text" placeholder="Email" ref={loginEmailRef} />
-            <input type="password" placeholder="Password" ref={loginPasswordRef} />
-            <button onClick={handleLogin}>Login</button>
-            <button onClick={() => setAction("register")}>Sign up</button>
-
+          <div className={styles.Login}>
+            <Typography variant="h5" gutterBottom>Login In To Pet Care</Typography>
             <TextField
               required
               label="Email"
-              defaultValue=""
               variant="filled"
+              value={loginEmailValue}
+              onChange={(e) => setLoginEmailValue(e.target.value)}
             />
+            <TextField
+              required
+              label="Password"
+              variant="filled"
+              type="password"
+              value={loginPasswordValue}
+              onChange={(e) => setLoginPasswordValue(e.target.value)}
+            />
+            <div>
+              <Button variant="outlined" onClick={handleLogin}>Login</Button>
+              <Typography variant="body2" sx={{ display: "inline", mx: 1 }}>or</Typography>
+              <Button variant="outlined" onClick={() => setAction("register")}>Register</Button>
+            </div>
           </div>
           :
-          <div>
-            <input type="text" placeholder="Username" ref={usernameRef} />
-            <input type="text" placeholder="Email" ref={emailRef} />
-            <input type="password" placeholder="Password" ref={passwordRef} />
-            <input type="password" placeholder="Confirm Password" ref={passwordConfirmRef} />
-            <button onClick={handleRegister}>Register</button>
-            <button onClick={() => setAction("login")}>I have an account</button>
+          <div className={styles.Register}>
+            <Typography variant="h5" gutterBottom>Register For Pet Care</Typography>
+            <TextField
+              required
+              label="Username"
+              variant="filled"
+              value={usernameValue}
+              onChange={(e) => setUsernameValue(e.target.value)}
+            />
+            <TextField
+              required
+              label="Email"
+              variant="filled"
+              value={emailValue}
+              onChange={(e) => setEmailValue(e.target.value)}
+            />
+            <TextField
+              required
+              label="Password"
+              variant="filled"
+              type="password"
+              value={passwordValue}
+              onChange={(e) => setPasswordValue(e.target.value)}
+            />
+            <TextField
+              required
+              label="Confirm Password"
+              variant="filled"
+              type="password"
+              value={passwordConfirmValue}
+              onChange={(e) => setPasswordConfirmValue(e.target.value)}
+            />
+
+            <Button variant="outlined" onClick={handleRegister}>Register</Button>
+            <Button variant="outlined" onClick={() => setAction("login")}>I have an account</Button>
           </div>
       }</div>}
       {action === "logged in" && <div>
-        <h2>Welcome, {userInfo?.name || "User"}!</h2>
-        <button onClick={handleLogout}>Logout</button>
+        <Typography variant="h5" gutterBottom>Welcome, {userInfo?.name || "User"}!</Typography>
+        <Typography variant="body1" gutterBottom>You can view your pet information and stats on this dashboard page</Typography>
+        <Button variant="outlined" onClick={handleLogout}>Logout</Button>
       </div>}
     </div>
   );
