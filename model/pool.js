@@ -44,7 +44,8 @@ if (process.env.NODE_ENV === "production") {
 pool.getConnection((err, connection) => {
   if (err) {
     console.error("Error connecting to the database:", err);
-  } else {
+  }
+  else {
     console.log("Connected to the MariaDB database.");
 
     connection.execute(`
@@ -55,7 +56,6 @@ pool.getConnection((err, connection) => {
         hashed_password VARCHAR(64),
         salt VARCHAR(64), 
         created_at INT(10),
-        pets TEXT,
         settings JSON
       )
     `);
@@ -63,11 +63,28 @@ pool.getConnection((err, connection) => {
     connection.execute(`
       CREATE TABLE IF NOT EXISTS pets (
         pet_id VARCHAR(10) NOT NULL PRIMARY KEY,
+        user_id VARCHAR(10),
         name VARCHAR(40),
         type VARCHAR(20),
         water INT(10),
         energy INT(10),
-        created_at INT(10)
+        created_at INT(10),
+        CONSTRAINT pet_user
+        FOREIGN KEY (user_id) REFERENCES users(user_id)
+        ON DELETE CASCADE
+      )
+    `);
+
+    connection.execute(`
+      CREATE TABLE IF NOT EXISTS activities (
+        activity_id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id VARCHAR(10),
+        type VARCHAR(20),
+        time INT(10) DEFAULT 0,
+        timestamp INT(10),
+        CONSTRAINT activity_user
+        FOREIGN KEY (user_id) REFERENCES users(user_id)
+        ON DELETE CASCADE
       )
     `);
 

@@ -24,7 +24,7 @@ export default function EyePopup({ setIsEyePopupOpen }) {
         }
         return prevProgress + 1;
       });
-    }, 200); // Update every 200ms for a total of 20 seconds
+    }, 10); // Update every 200ms for a total of 20 seconds
     setIsTimerRunning(true);
     return () => clearInterval(interval);
   }, [progress]);

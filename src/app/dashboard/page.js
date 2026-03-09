@@ -9,9 +9,10 @@ import WaterPopup from "@/components/waterpopup/waterpopup";
 import EyePopup from "@/components/eyepopup/eyepopup";
 import StretchPopup from "@/components/stretchpopup/stretchpopup";
 import EvolvingPopup from "@/components/evolvingpopup/evolvingpopup";
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import ResponsiveAppBar from "@/components/navbar/navbar";
+import LineChartStats from "@/components/line chart/linechart";
 
 export default function Settings() {
 
@@ -25,19 +26,24 @@ export default function Settings() {
       <div className={styles.page}>
         <div className={styles.Dashboard}>
           <ResponsiveAppBar />
-          <Grid container spacing={2} sx={{ margin: 2}}>
+          <Grid container spacing={2} sx={{ margin: 2 }}>
             <Grid size={4}>
               <AccountCard />
             </Grid>
             <Grid size={4}>
-              <Button variant="contained" color="primary" fullWidth onClick={() => setIsEyePopupOpen(true)}>
-                Eye Strain Reminder
-              </Button>
+              <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 2 }}>
+                <Typography variant="h5" align="center" sx={{fontFamily: "Cormorant Garamond"}} gutterBottom>
+                  Great Job!
+                  <LineChartStats />
+                </Typography>
+              </Box>
             </Grid>
             <Grid size={4}>
-              <Button variant="contained" color="primary" fullWidth onClick={() => setIsEvolvingPopupOpen(true)}>
-                Evolving Reminder
-              </Button>
+              <Stack spacing={1}>
+                <Button variant="outlined" color="primary">Evolving Reminder</Button>
+                <Button variant="outlined" color="primary">One</Button>
+                <Button variant="outlined" color="primary" onClick={() => setIsEyePopupOpen(true)}>Open Eye</Button>
+              </Stack>
             </Grid>
             <Grid size={8}>
               <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '40vh', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
