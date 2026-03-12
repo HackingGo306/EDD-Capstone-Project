@@ -1,6 +1,7 @@
 import { Confetti } from "@/utils/confetti"
 import confetti from "canvas-confetti"
 import { Button } from "@mui/material"
+import { alpha } from "@mui/material"
 
 export function FireworksConfetti({ButtonText = "Trigger Fireworks"}) {
   const handleClick = () => {
@@ -33,7 +34,7 @@ export function FireworksConfetti({ButtonText = "Trigger Fireworks"}) {
 
   return (
     <div className="relative">
-      <Button color="secondary" variant="outlined" onClick={handleClick}>{ButtonText}</Button>
+      <Button sx={{ mt: "0.5rem", backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8)}} variant="contained" color="secondary" onClick={handleClick}>{ButtonText}</Button>
     </div>
   )
 }

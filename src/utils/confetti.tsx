@@ -16,7 +16,7 @@ import type {
   Options as ConfettiOptions,
 } from "canvas-confetti"
 import confetti from "canvas-confetti"
-
+import { alpha } from "@mui/material/styles";
 import { Button } from "@mui/material"
 
 type Api = {
@@ -97,7 +97,7 @@ const ConfettiComponent = forwardRef<ConfettiRef, Props>((props, ref) => {
 
   return (
     <ConfettiContext.Provider value={api}>
-      <canvas ref={canvasRef} {...rest} />
+      <canvas ref={canvasRef} {...rest}/>
       {children}
     </ConfettiContext.Provider>
   )
@@ -137,7 +137,7 @@ const ConfettiButtonComponent = ({
   }
 
   return (
-    <Button color="secondary" variant="outlined"  onClick={handleClick} {...props}> {children} </Button>
+    <Button sx={{ mt: "0.5rem", backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8)}} variant="contained" color="secondary" onClick={handleClick} {...props}> {children} </Button>
   )
 }
 

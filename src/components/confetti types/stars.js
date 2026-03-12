@@ -1,6 +1,7 @@
-import { Confetti } from "@/utils/confetti"
-import confetti from "canvas-confetti"
-import { Button } from "@mui/material"
+import { Confetti } from "@/utils/confetti";
+import confetti from "canvas-confetti";
+import { Button } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 
 
 export function StarsConfetti({ButtonText = "Trigger Stars"}) {
@@ -37,7 +38,7 @@ export function StarsConfetti({ButtonText = "Trigger Stars"}) {
 
   return (
     <div className="relative">
-      <Button onClick={handleClick} variant="outlined" color="secondary">{ButtonText}</Button>
+      <Button onClick={handleClick} sx={{ mt: "0.5rem", backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8)}} variant="contained">{ButtonText}</Button>
     </div>
   )
 }

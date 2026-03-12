@@ -1,6 +1,7 @@
 import { Confetti } from "@/utils/confetti"
 import confetti from "canvas-confetti"
 import { Button } from "@mui/material"
+import { alpha } from "@mui/material"
 
 
 export function SideCannonsConfetti({ButtonText = "Trigger Side Cannons"}) {
@@ -36,7 +37,7 @@ export function SideCannonsConfetti({ButtonText = "Trigger Side Cannons"}) {
 
   return (
     <div className="relative">
-      <Button onClick={handleClick} variant="outlined" color="secondary">{ButtonText}</Button>
+      <Button onClick={handleClick} sx={{ mt: "0.5rem", backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8)}} color="secondary" variant="contained">{ButtonText}</Button>
     </div>
   )
 }

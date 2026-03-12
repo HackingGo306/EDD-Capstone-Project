@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import styles from "./eyepopup.module.css";
 import { Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
 import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
+import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
 
 export default function EyePopup({ setIsEyePopupOpen }) {
 
@@ -24,13 +25,22 @@ export default function EyePopup({ setIsEyePopupOpen }) {
         }
         return prevProgress + 1;
       });
-    }, 10); // Update every 200ms for a total of 20 seconds
+    }, 200); // Update every 200ms for a total of 20 seconds
+
     setIsTimerRunning(true);
+    beginUserActivity({ type: "eye" });
+
     return () => clearInterval(interval);
   }, [progress]);
 
+  useEffect(() => {
+    if (progress === 100) {
+      endUserActivity();
+    }
+  }, [progress]);
+
   return (
-    <Paper className={styles.EyePopup} sx={{ backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.5) }}>
+    <Paper className={styles.EyePopup} sx={{ backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.9) }}>
       <div className={styles.PopupContent}>
 
         { // No break = angry, during break = hide, break done = happy
@@ -63,7 +73,7 @@ export default function EyePopup({ setIsEyePopupOpen }) {
 
           { //Begin and Skip Buttons
             !(progress > 0 || isTimerFinished || isTimerRunning) && <div>
-              <Button variant="outlined" color="secondary" onClick={startTimer}>Begin</Button>
+              <Button sx={{ backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8) }} variant="contained" color="secondary" onClick={startTimer}>Begin</Button>
               <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsEyePopupOpen(false)}>Skip</Button>
             </div>
           }
@@ -79,7 +89,7 @@ export default function EyePopup({ setIsEyePopupOpen }) {
           { // Celebrate and Done Buttons
             isTimerFinished && <div>
               <ChooseConfetti text={"Celebrate 🎉🎉🎉"} />
-              <Button sx={{ mt: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsEyePopupOpen(false)}>Done</Button>
+              <Button sx={{ mt: "0.5rem"}} variant="outlined" color="secondary" onClick={() => setIsEyePopupOpen(false)}>Done</Button>
             </div>
           }
         </div>

@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
+import { useState, useEffect } from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
+import { getUserActivities } from '@/api/ActivitiesAPI';
 
-const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
-const pData = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
 const xLabels = [
   'Page A',
   'Page B',
@@ -14,12 +14,38 @@ const xLabels = [
 ];
 
 export default function BiaxialLineChart() {
+
+  const [userActivities, setUserActivities] = useState([]);
+  const [waterData, setWaterData] = useState([]);
+  const [eyeData, setEyeData] = useState([]);
+  const [stretchData, setStretchData] = useState([]);
+
+  useEffect(() => {
+    const fetchUserActivities = async () => {
+      try {
+        const activities = await getUserActivities();
+        setUserActivities(activities.data);
+      } catch (error) {
+        console.error('Error fetching user activities:', error);
+      }
+    };
+    fetchUserActivities();
+  }, []);
+
+  useEffect(() => {
+    if (userActivities.length > 0) {
+      for (let i = 0; i < userActivities.length; i++) {
+
+      }
+    }
+  }, [userActivities]);
+
   return (
     <Box sx={{ width: '100%', height: 300 }}>
       <LineChart
         series={[
-          { data: pData, label: 'pv', yAxisId: 'leftAxisId' },
-          { data: uData, label: 'uv', yAxisId: 'rightAxisId' },
+          { data: stretchData, label: 'Stretch Break', yAxisId: 'leftAxisId' },
+          { data: waterData, label: 'Water Break', yAxisId: 'rightAxisId' },
         ]}
         xAxis={[{ scaleType: 'point', data: xLabels, height: 28 }]}
         yAxis={[
