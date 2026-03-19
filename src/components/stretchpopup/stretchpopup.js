@@ -1,13 +1,13 @@
 "use client";
 
-
 import styles from "./stretchpopup.module.css";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useContext } from "react";
 import { Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
 import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
+import { UserInfoContext } from "@/utils/contexts";
 
 
 export default function StretchPopup({ setIsStretchPopupOpen }) {
@@ -15,6 +15,7 @@ export default function StretchPopup({ setIsStretchPopupOpen }) {
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
+  const {refreshUserInfo} = useContext(UserInfoContext);
 
   const startTimer = useCallback(() => {
     const interval = setInterval(() => {
@@ -38,6 +39,7 @@ export default function StretchPopup({ setIsStretchPopupOpen }) {
   useEffect(() => {
     if (progress === 100) {
       endUserActivity();
+      refreshUserInfo();
     }
   }, [progress]);
 
@@ -76,7 +78,7 @@ export default function StretchPopup({ setIsStretchPopupOpen }) {
           { //Begin and Skip Buttons
             !(progress > 0 || isTimerFinished || isTimerRunning) && <div>
               <Button sx={{ backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8) }} variant="contained" color="secondary" onClick={startTimer}>Begin</Button>
-              <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsEyePopupOpen(false)}>Skip</Button>
+              <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsStretchPopupOpen(false)}>Skip</Button>
             </div>
           }
 
@@ -91,7 +93,7 @@ export default function StretchPopup({ setIsStretchPopupOpen }) {
           { // Celebrate and Done Buttons
             isTimerFinished && <div>
               <ChooseConfetti text={"Celebrate 🎉🎉🎉"} />
-              <Button sx={{ mt: "0.5rem"}} variant="outlined" color="secondary" onClick={() => setIsEyePopupOpen(false)}>Done</Button>
+              <Button sx={{ mt: "0.5rem"}} variant="outlined" color="secondary" onClick={() => setIsStretchPopupOpen(false)}>Done</Button>
             </div>
           }
         </div>

@@ -10,13 +10,15 @@ import StretchPopup from "@/components/stretchpopup/stretchpopup";
 import EvolvingPopup from "@/components/evolvingpopup/evolvingpopup";
 import ResponsiveAppBar from "@/components/navbar/navbar";
 import DashboardGrid from "@/components/dashboard grid/dashboardGrid";
+import ChoosePetPopup from "@/components/choosepetpopup/choosepetpopup";
 
 export default function Settings() {
 
-  const [isWaterPopupOpen, setIsWaterPopupOpen] = useState(false);
+  const [isWaterPopupOpen, setIsWaterPopupOpen] = useState(true);
   const [isEyePopupOpen, setIsEyePopupOpen] = useState(false);
-  const [isStretchPopupOpen, setIsStretchPopupOpen] = useState(true);
+  const [isStretchPopupOpen, setIsStretchPopupOpen] = useState(false);
   const [isEvolvingPopupOpen, setIsEvolvingPopupOpen] = useState(false);
+  const [isChoosePetPopupOpen, setIsChoosePetPopupOpen] = useState(false);
 
   return (
     <ThemeProvider theme={CUSTOM_THEME}>
@@ -25,6 +27,8 @@ export default function Settings() {
           <ResponsiveAppBar />
           <br />
           <DashboardGrid />
+
+          {isChoosePetPopupOpen && <ChoosePetPopup setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />}
 
           {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} />}
 

@@ -68,7 +68,6 @@ Router.post('/end', async (req, res) => {
       if (!breakData) {
         return res.status(400).send({
           success: false,
-          message: "No break in progress"
         });
       }
 

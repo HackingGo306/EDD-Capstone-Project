@@ -1,23 +1,11 @@
 import styles from "./dashboardGrid.module.css"
-import { useRef, useEffect, useState } from "react"
-import { Box, Button, Container, Paper, Stack, Typography } from "@mui/material";
-import LineChartStats from "@/components/line chart/linechart";
+import { Box, Container, Typography } from "@mui/material";
 import AccountCard from "../account card/accountCard";
 import GridItem from "../grid item/gridItem";
-import { getUserActivities, beginUserActivity } from "@/api/ActivitiesAPI";
+import PetCanvas from "../pet canvas/petcanvas";
+import UserStats from "@/components/user stats/userStats";
 
 export default function DashboardGrid() {
-
-
-  const fetchActivities = async () => {
-    const data = await getUserActivities();
-    console.log(data);
-  }
-
-  const addActivity = async () => {
-    await beginUserActivity({ type: "eye" });
-  }
-
   return (
     <Box
       className={styles.DashboardGrid}
@@ -31,46 +19,25 @@ export default function DashboardGrid() {
     >
       <GridItem><AccountCard /></GridItem>
       <GridItem columnSpan={2}>
-        <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '40vh', backgroundColor: '#f5f5f5', borderRadius: '1rem', padding: 0 }}>
-          <div className={styles.BannerImg}>
-            <img src="/purpleBanner.jpg" alt="Pet Image" />
-          </div>
+        <Container style={{ aspectRatio: '3/1', backgroundColor: '#f5f5f5', borderRadius: '1rem', padding: 0 }}>
+          <PetCanvas />
         </Container>
       </GridItem>
       <GridItem>
-        <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 2 }}>
-          <Typography variant="h5" align="center" sx={{ fontFamily: "Cormorant Garamond" }} gutterBottom>
-            Great Job!
-            <LineChartStats />
-          </Typography>
-        </Box>
+        <UserStats />
       </GridItem>
       <GridItem>
-        <Stack spacing={1}>
-          <Button variant="outlined" color="primary">Evolving Reminder</Button>
-          <Button variant="outlined" color="primary">One</Button>
-          <Button variant="outlined" color="primary">Open Eye</Button>
-        </Stack>
-      </GridItem>
-      <GridItem>
-        <Button variant="outlined" color="primary" onClick={() => { fetchActivities(); }}>
-          Click to see
-        </Button>
-      </GridItem>
-      <GridItem>
-        <Button variant="outlined" color="primary" onClick={() => { addActivity(); }}>
-          Click to add
-        </Button>
+        Hi
       </GridItem>
       <GridItem>Item G</GridItem>
       <GridItem>Item H</GridItem>
       <GridItem>Item I</GridItem>
       <GridItem>Item J</GridItem>
-      <GridItem>Item K</GridItem>
       <GridItem>
-        <Button variant="outlined" color="primary" onClick={() => { addActivity(); }}>
-          Click to add
-        </Button>
+        Hi
+      </GridItem>
+      <GridItem>
+        Hi
       </GridItem>
     </Box>
   );

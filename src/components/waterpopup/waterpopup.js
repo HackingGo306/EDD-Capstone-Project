@@ -1,12 +1,14 @@
 "use client";
 
 import styles from "./waterpopup.module.css";
-import { useState, useCallback, useEffect  } from "react";
+import { useState, useCallback, useEffect, useContext } from "react";
 import { Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
 import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
+import { UserInfoContext } from "@/utils/contexts";
+import Webcam from "react-webcam";
 
 
 export default function WaterPopup({setIsWaterPopupOpen}) {
@@ -14,30 +16,17 @@ export default function WaterPopup({setIsWaterPopupOpen}) {
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
+  const {refreshUserInfo} = useContext(UserInfoContext);
 
   const startTimer = useCallback(() => {
-    const interval = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress >= 100) {
-          clearInterval(interval);
-          setIsTimerRunning(false);
-          setIsTimerFinished(true);
-          endUserActivity();
-          return 100;
-        }
-        return prevProgress + 1;
-      });
-    }, 200); // Update every 200ms for a total of 20 seconds
-
     setIsTimerRunning(true);
     beginUserActivity({ type: "water" });
-
-    return () => clearInterval(interval);
   }, [progress]);
 
   useEffect(() => {
     if (progress === 100) {
       endUserActivity();
+      refreshUserInfo();
     }
   }, [progress]);
 
@@ -82,8 +71,7 @@ export default function WaterPopup({setIsWaterPopupOpen}) {
           { // Progress Circle
             isTimerRunning &&
             <div>
-              <CircularProgress enableTrackSlot variant="determinate" color="secondary" size={75} value={progress} />
-              <Typography variant="h6" sx={{ mt: "0.5rem" }}>{`${Math.round(progress)}%`}</Typography>
+              <Webcam className={styles.WebcamView} width={"50%"}/>
             </div>
           }
 

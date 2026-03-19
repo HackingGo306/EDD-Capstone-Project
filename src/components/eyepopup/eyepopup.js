@@ -1,18 +1,20 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useContext } from "react";
 import styles from "./eyepopup.module.css";
 import { Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
 import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
+import { UserInfoContext } from "@/utils/contexts";
 
 export default function EyePopup({ setIsEyePopupOpen }) {
 
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
+  const {refreshUserInfo} = useContext(UserInfoContext);
 
   const startTimer = useCallback(() => {
     const interval = setInterval(() => {
@@ -36,6 +38,7 @@ export default function EyePopup({ setIsEyePopupOpen }) {
   useEffect(() => {
     if (progress === 100) {
       endUserActivity();
+      refreshUserInfo();
     }
   }, [progress]);
 

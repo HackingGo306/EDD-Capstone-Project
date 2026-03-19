@@ -56,9 +56,19 @@ pool.getConnection((err, connection) => {
         hashed_password VARCHAR(64),
         salt VARCHAR(64), 
         created_at INT(10),
+        pet VARCHAR(20),
         settings JSON
       )
     `);
+
+    connection.query(
+      "ALTER TABLE users ADD COLUMN pet VARCHAR(20)",
+      (err) => {
+        if (err && err.code !== "ER_DUP_FIELDNAME") {
+          console.error("Error adding users.pet column:", err);
+        }
+      }
+    );
 
     connection.execute(`
       CREATE TABLE IF NOT EXISTS pets (

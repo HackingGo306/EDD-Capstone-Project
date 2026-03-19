@@ -1,6 +1,6 @@
 import styles from "./breakChart.module.css";
 import { Typography } from "@mui/material";
-import LineChartStats from "../line chart/linechart";
+import LineChartStats from "../user stats/userStats";
 
 export default function BreakChart() {
   return <div>

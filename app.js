@@ -90,9 +90,11 @@ app.use(sessionMiddleWare);
 const authAPI = require("./api/auth").Router;
 const userAPI = require("./api/user").Router;
 const activitiesAPI = require('./api/activity').Router;
+const petAPI = require("./api/pet").Router;
 app.use("/auth", authAPI);
 app.use("/user", userAPI);
 app.use('/activities', activitiesAPI);
+app.use('/pet', petAPI);
 
 app.head("/", (req, res) => {
   res.status(200).end();
