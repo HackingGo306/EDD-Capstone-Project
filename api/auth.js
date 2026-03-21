@@ -14,7 +14,6 @@ async function autoSignin(
     return res.status(400).send({
       success: false,
       status: 400,
-      message: "Please log in",
       error: { reason: "No valid session or token found" },
     });
   }

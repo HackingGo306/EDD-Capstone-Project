@@ -25,8 +25,15 @@ export default function UserStats() {
   ]
 
   useEffect(() => {
-    if (!userInfo.activities) return;
-    console.log(userInfo);
+    console.log("checking act", userInfo)
+    if (!userInfo.activities?.length) {
+      console.log('no activities');
+      setUserActivities([]);
+      setWaterData([]);
+      setEyeData([]);
+      setStretchData([]);
+      return;
+    }
     setUserActivities(userInfo.activities);
   }, [userInfo]);
 
@@ -69,7 +76,7 @@ export default function UserStats() {
 
   return (
     <div>
-      <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 1, height: 250 }}>
+      <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 1, paddingBottom: 0 }}>
         <Typography variant="h6" align="center" sx={{ fontFamily: "Cormorant Garamond" }} gutterBottom>
           Activity Breakdown
         </Typography>
@@ -86,7 +93,7 @@ export default function UserStats() {
           height={200}
         />
       </Box>
-      <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 1, marginTop: 1, height: 200 }}>
+      <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 1, paddingBottom: 0, marginTop: 1 }}>
         <Typography variant="h6" align="center" sx={{ fontFamily: "Cormorant Garamond" }} gutterBottom>
           Water Break
         </Typography>

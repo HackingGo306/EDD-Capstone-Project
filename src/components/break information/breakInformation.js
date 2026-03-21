@@ -22,6 +22,7 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
   useEffect(() => {
     // Calculate the next water break time
     if (!userInfo.activities) return;
+    if (!userInfo.activities.length) return;
 
     const sessionOpened = Math.floor(parseInt(sessionStorage.login) / 1000) || Date.now() / 1000;
     if (!sessionStorage.wb) sessionStorage.setItem("wb", sessionOpened);

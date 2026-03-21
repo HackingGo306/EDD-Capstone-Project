@@ -1,7 +1,8 @@
 import { useRef, useEffect, useCallback, useContext } from "react";
 import styles from './petcanvas.module.css'
 import { useWindowSize } from "@react-hook/window-size";
-import { PetsContext } from "@/utils/contexts";
+import { PetsContext, UserInfoContext } from "@/utils/contexts";
+import { Box, Typography } from "@mui/material";
 
 const dist = function (x1, y1, x2, y2) {
   return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
@@ -16,6 +17,7 @@ export default function PetCanvas() {
   const requestRef = useRef(null);
   const [width, height] = useWindowSize();
   const { pets, refreshPets } = useContext(PetsContext);
+  const { userInfo } = useContext(UserInfoContext);
 
   // Canvas related variables
   const mouseRef = useRef({ x: 0, y: 0 });
@@ -23,8 +25,8 @@ export default function PetCanvas() {
   const selectedPetRef = useRef({});
 
   useEffect(() => {
-    console.log(pets);
-  }, [pets]);
+    refreshPets();
+  }, [userInfo]);
 
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
@@ -43,6 +45,7 @@ export default function PetCanvas() {
 
   useEffect(() => {
     if (!canvasRef.current) return;
+    if (!pets.length || !userInfo.loggedIn) return;
 
     let drawnPets = [...pets];
 
@@ -59,26 +62,16 @@ export default function PetCanvas() {
       const mouseX = mouseRef.current.x;
       const mouseY = mouseRef.current.y;
 
-      var radgrad = ctx.createRadialGradient(0, 0, 1, 0, 0, 300);
-      radgrad.addColorStop(0, '#0c13d3ff');
-      radgrad.addColorStop(1, 'rgba(1,159,98,0)');
+      ctx.clearRect(0, 0, 300, 100);
 
-      var radgrad2 = ctx.createRadialGradient(0, 100, 1, 0, 100, 300);
-      radgrad2.addColorStop(0, '#FF5F98');
-      radgrad2.addColorStop(1, 'rgba(255,1,136,0)');
+      var radgrad = ctx.createRadialGradient(0, 0, 1, 0, 0, 200);
+      radgrad.addColorStop(0, '#d490ffff');
+      radgrad.addColorStop(1, 'rgba(212, 125, 255, 0)');
 
-      var radgrad3 = ctx.createRadialGradient(300, 0, 1, 300, 0, 300);
-      radgrad3.addColorStop(0, '#00C9FF');
-      radgrad3.addColorStop(1, 'rgba(0,201,255,0)');
+      var radgrad2 = ctx.createRadialGradient(300, 100, 1, 300, 100, 200);
+      radgrad2.addColorStop(0, '#9ed5ffff');
+      radgrad2.addColorStop(1, 'rgba(133, 218, 255, 0)');
 
-      var radgrad4 = ctx.createRadialGradient(300, 100, 1, 300, 100, 300);
-      radgrad4.addColorStop(0, '#F4F201');
-      radgrad4.addColorStop(1, 'rgba(228,199,0,0)');
-
-      ctx.fillStyle = radgrad4;
-      ctx.fillRect(0, 0, 300, 100);
-      ctx.fillStyle = radgrad3;
-      ctx.fillRect(0, 0, 300, 100);
       ctx.fillStyle = radgrad2;
       ctx.fillRect(0, 0, 300, 100);
       ctx.fillStyle = radgrad;
@@ -175,7 +168,7 @@ export default function PetCanvas() {
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     }
-  }, [width, height, pets]);
+  }, [width, height, pets, userInfo]);
 
   const getMouse = useCallback((e) => {
     var rect = canvasRef.current.getBoundingClientRect();
@@ -207,6 +200,11 @@ export default function PetCanvas() {
 
   return (
     <div className={styles.PetCanvas}>
+      <div className={styles.NoUser} style={{ display: (userInfo.loggedIn ? "none" : "block")}}>
+        <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: '2rem' }}>
+          <Typography variant="h6">Please log in to see your pets!</Typography>
+        </Box>
+      </div>
       <canvas ref={canvasRef}></canvas>
     </div>
   )

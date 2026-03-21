@@ -1,0 +1,23 @@
+.CurrentPet .CurrentPetContent {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.CurrentPet .CurrentPetImage{
+  width: 100%;
+}
+
+.CurrentPet .CurrentPetImage img {
+  width: 100%;
+  height: auto;
+}
+
+.CurrentPet .CurrentPetProgress {
+  width: 75%;
+  height: 1rem;
+}
+
+.CurrentPet .CurrentPetInfo {
+  width: 100%;
+}

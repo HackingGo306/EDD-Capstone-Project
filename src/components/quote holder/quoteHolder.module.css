@@ -1,0 +1,16 @@
+.QuoteHolder {
+  text-align: center;
+}
+
+.QuoteHolder .QuoteContent {
+  margin-top: 0.5rem;
+  padding-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.QuoteHolder .ColorOverride {
+  color: default;
+}

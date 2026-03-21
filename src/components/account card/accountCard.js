@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useContext } from "react";
 import { getAuthLogout, postAuthSignin, postAuthSignup } from "@/api/AuthAPI";
 import { getUserInfo } from "@/api/UserAPI";
 import styles from "./accountCard.module.css";
-
+import { UserInfoContext } from "@/utils/contexts";
 import TextField from '@mui/material/TextField';
 import { Button, Typography } from "@mui/material";
 
 
 export default function AccountCard() {
 
-  const [userInfo, setUserInfo] = useState(null);
+  const {userInfo, refreshUserInfo} = useContext(UserInfoContext);
   const [action, setAction] = useState("login");
 
   const [loginEmailValue, setLoginEmailValue] = useState("");
@@ -22,19 +22,14 @@ export default function AccountCard() {
   const [passwordValue, setPasswordValue] = useState("");
   const [passwordConfirmValue, setPasswordConfirmValue] = useState("");
 
-  const fetchUserInfo = useCallback(async () => {
-    const userInfo = await getUserInfo();
-    setUserInfo(userInfo.data);
+  useEffect(() => {
     if (userInfo.loggedIn) {
       setAction("logged in");
-    } else {
+    }
+    else {
       setAction("login");
     }
-  }, [getUserInfo, setUserInfo, setAction]);
-
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
     setUsernameValue("");
@@ -57,10 +52,10 @@ export default function AccountCard() {
     }
 
     await postAuthSignin({ email, password });
-    fetchUserInfo();
-  }, [loginEmailValue, loginPasswordValue, fetchUserInfo]);
+    setTimeout(refreshUserInfo, 100);
+  }, [loginEmailValue, loginPasswordValue]);
 
-  const handleRegister = useCallback(() => {
+  const handleRegister = useCallback(async () => {
     const username = usernameValue;
     const email = emailValue;
     const password = passwordValue;
@@ -75,15 +70,16 @@ export default function AccountCard() {
       return;
     }
 
-    postAuthSignup({ email, name: username, password });
+    await postAuthSignup({ email, name: username, password });
     setAction("login");
-  }, [usernameValue, emailValue, passwordValue, passwordConfirmValue, fetchUserInfo]);
+    setTimeout(refreshUserInfo, 100);
+  }, [usernameValue, emailValue, passwordValue, passwordConfirmValue]);
 
-  const handleLogout = useCallback(() => {
-    getAuthLogout();
-    setUserInfo(null);
+  const handleLogout = useCallback(async() => {
+    await getAuthLogout();
     setAction("login");
-  }, [getAuthLogout, setUserInfo, setAction]);
+    setTimeout(refreshUserInfo, 100);
+  }, [getAuthLogout, setAction]);
 
   return (
     <div className={styles.AccountCard}>
@@ -151,9 +147,9 @@ export default function AccountCard() {
           </div>
       }</div>}
       {action === "logged in" && <div>
-        <Typography variant="h5" gutterBottom>Welcome, {userInfo?.name || "User"}!</Typography>
+        <Typography variant="h5" gutterBottom>Welcome, {userInfo?.data?.name || "User"}!</Typography>
         <Typography variant="body1" gutterBottom>You can view your pet information and stats on this dashboard page</Typography>
-        <Button variant="outlined" onClick={handleLogout}>Logout</Button>
+        <Button variant="contained" size="small" onClick={handleLogout}>Logout</Button>
       </div>}
     </div>
   );

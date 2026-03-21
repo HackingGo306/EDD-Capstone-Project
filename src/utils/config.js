@@ -22,6 +22,9 @@ const CUSTOM_THEME = createTheme({
   },
   typography: {
     fontFamily: `"Cormorant Garamond", "Roboto", "Arial", sans-serif`,
+    h6: {
+      fontWeight: "bold",
+    },
     h5: {
       fontFamily: "Chango",
     },

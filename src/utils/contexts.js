@@ -48,7 +48,12 @@ const PetsProvider = ({ children }) => {
 
 const UserInfoProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
-  const [refresh, refreshUserInfo] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
+  const refreshUserInfo = useCallback(() => {
+    console.log("calling refreshUserInfo");
+    setRefresh(!refresh);
+  }, [refresh]);
 
   useEffect(() => {
     async function fetchUserInfo() {
