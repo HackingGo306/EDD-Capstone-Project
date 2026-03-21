@@ -9,7 +9,7 @@ import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
 import { UserInfoContext } from "@/utils/contexts";
 
-export default function EyePopup({ setIsEyePopupOpen }) {
+export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh }) {
 
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -41,6 +41,12 @@ export default function EyePopup({ setIsEyePopupOpen }) {
       refreshUserInfo();
     }
   }, [progress]);
+
+  const handleSkip = useCallback(() => {
+    sessionStorage.setItem("eb", Date.now() / 1000);
+    setIsEyePopupOpen(false);
+    triggerTimerRefresh();
+  }, [triggerTimerRefresh]);
 
   return (
     <Paper className={styles.EyePopup} sx={{ backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.9) }}>
@@ -77,7 +83,7 @@ export default function EyePopup({ setIsEyePopupOpen }) {
           { //Begin and Skip Buttons
             !(progress > 0 || isTimerFinished || isTimerRunning) && <div>
               <Button sx={{ backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8) }} variant="contained" color="secondary" onClick={startTimer}>Begin</Button>
-              <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsEyePopupOpen(false)}>Skip</Button>
+              <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={handleSkip}>Skip</Button>
             </div>
           }
 

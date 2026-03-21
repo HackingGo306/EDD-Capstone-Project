@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styles from "./page.module.css";
 import { ThemeProvider } from '@mui/material/styles';
 import { CUSTOM_THEME } from "@/utils/config";
@@ -11,10 +11,17 @@ import EvolvingPopup from "@/components/evolvingpopup/evolvingpopup";
 import ResponsiveAppBar from "@/components/navbar/navbar";
 import DashboardGrid from "@/components/dashboard grid/dashboardGrid";
 import ChoosePetPopup from "@/components/choosepetpopup/choosepetpopup";
+import { RefreshContext } from "@/utils/contexts";
 
 export default function Settings() {
 
-  const [isWaterPopupOpen, setIsWaterPopupOpen] = useState(true);
+  useEffect(() => {
+    if (sessionStorage.getItem("login")) return;
+    sessionStorage.setItem("login", Date.now());
+  }, []);
+  const { triggerTimerRefresh } = useContext(RefreshContext);
+
+  const [isWaterPopupOpen, setIsWaterPopupOpen] = useState(false);
   const [isEyePopupOpen, setIsEyePopupOpen] = useState(false);
   const [isStretchPopupOpen, setIsStretchPopupOpen] = useState(false);
   const [isEvolvingPopupOpen, setIsEvolvingPopupOpen] = useState(false);
@@ -26,15 +33,15 @@ export default function Settings() {
         <div className={styles.Dashboard}>
           <ResponsiveAppBar />
           <br />
-          <DashboardGrid />
+          <DashboardGrid setIsWaterPopupOpen={setIsWaterPopupOpen} setIsEyePopupOpen={setIsEyePopupOpen} setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />
 
-          {isChoosePetPopupOpen && <ChoosePetPopup setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />}
+          {isChoosePetPopupOpen && <ChoosePetPopup setIsChoosePetPopupOpen={setIsChoosePetPopupOpen}/>}
 
-          {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} />}
+          {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
 
-          {isEyePopupOpen && <EyePopup setIsEyePopupOpen={setIsEyePopupOpen} />}
+          {isEyePopupOpen && <EyePopup setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
 
-          {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} />}
+          {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
 
           {isEvolvingPopupOpen && <EvolvingPopup setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
         </div>

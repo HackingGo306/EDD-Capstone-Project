@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ToastContainer, Bounce } from "react-toastify";
-import { PetsProvider, UserInfoProvider } from "@/utils/contexts";
+import { PetsProvider, RefreshContext, RefreshContextProvider, UserInfoProvider } from "@/utils/contexts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,13 +30,15 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double+Ink:wght@100..900&family=Chango&display=swap" rel="stylesheet"></link>
       </head>
-      
+
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <UserInfoProvider>
-          <PetsProvider>
-            {children}
-          </PetsProvider>
-        </UserInfoProvider>
+        <RefreshContextProvider>
+          <UserInfoProvider>
+            <PetsProvider>
+              {children}
+            </PetsProvider>
+          </UserInfoProvider>
+        </RefreshContextProvider>
         <ToastContainer
           position="top-right"
           autoClose={3000}

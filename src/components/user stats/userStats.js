@@ -45,6 +45,8 @@ export default function UserStats() {
       setXLabels(rotated);
 
       for (let i = 0; i < activities.length; i++) {
+        if (activities[i].timestamp * 1000 < Date.now() - 6 * 24 * 60 * 60 * 1000) continue;
+
         if (activities[i].type === 'water') {
           const dayIndex = (new Date(activities[i].timestamp * 1000).getDay() - startDay + 6) % 7;
           newWaterData[dayIndex] += Math.round(activities[i].time * 100 / 60) / 100;

@@ -1,0 +1,9 @@
+.BreakInformation .chip {
+  margin-top: 1rem;
+}
+
+.BreakInformation .BreakInfoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

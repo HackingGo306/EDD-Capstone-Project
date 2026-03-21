@@ -10,12 +10,12 @@ import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
 import { UserInfoContext } from "@/utils/contexts";
 
 
-export default function StretchPopup({ setIsStretchPopupOpen }) {
+export default function StretchPopup({ setIsStretchPopupOpen, triggerTimerRefresh }) {
 
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
-  const {refreshUserInfo} = useContext(UserInfoContext);
+  const { refreshUserInfo } = useContext(UserInfoContext);
 
   const startTimer = useCallback(() => {
     const interval = setInterval(() => {
@@ -43,6 +43,12 @@ export default function StretchPopup({ setIsStretchPopupOpen }) {
     }
   }, [progress]);
 
+  const handleSkip = useCallback(() => {
+    sessionStorage.setItem("sb", Date.now() / 1000);
+    setIsStretchPopupOpen(false);
+    triggerTimerRefresh();
+  }, [triggerTimerRefresh]);
+
   return (
     <Paper className={styles.StretchPopup} sx={{ backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.9) }}>
       <div className={styles.PopupContent}>
@@ -61,16 +67,16 @@ export default function StretchPopup({ setIsStretchPopupOpen }) {
 
         { // Text dependent on whether the user has finished the eye break or not
           isTimerFinished ?
-          <div>
-            <Typography variant="h2" sx={{fontFamily: "Chango"}} gutterBottom>Great Job!</Typography>
-            <Typography variant="h6">You have finished your stretch break!</Typography>
-          </div>
-          :
-          <div>
-            <Typography variant="h1">STRETCH BREAK!</Typography>
-            <Typography variant="h6">Time to stand up...</Typography>
-            <Typography variant="h6">Stretch & do a little dance for your pet because your pet is bored.</Typography>
-          </div>
+            <div>
+              <Typography variant="h2" sx={{ fontFamily: "Chango" }} gutterBottom>Great Job!</Typography>
+              <Typography variant="h6">You have finished your stretch break!</Typography>
+            </div>
+            :
+            <div>
+              <Typography variant="h1">STRETCH BREAK!</Typography>
+              <Typography variant="h6">Time to stand up...</Typography>
+              <Typography variant="h6">Stretch & do a little dance for your pet because your pet is bored.</Typography>
+            </div>
         }
 
         <div className={styles.ProgressContainer}>
@@ -78,7 +84,7 @@ export default function StretchPopup({ setIsStretchPopupOpen }) {
           { //Begin and Skip Buttons
             !(progress > 0 || isTimerFinished || isTimerRunning) && <div>
               <Button sx={{ backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8) }} variant="contained" color="secondary" onClick={startTimer}>Begin</Button>
-              <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsStretchPopupOpen(false)}>Skip</Button>
+              <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={handleSkip}>Skip</Button>
             </div>
           }
 
@@ -93,11 +99,11 @@ export default function StretchPopup({ setIsStretchPopupOpen }) {
           { // Celebrate and Done Buttons
             isTimerFinished && <div>
               <ChooseConfetti text={"Celebrate 🎉🎉🎉"} />
-              <Button sx={{ mt: "0.5rem"}} variant="outlined" color="secondary" onClick={() => setIsStretchPopupOpen(false)}>Done</Button>
+              <Button sx={{ mt: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsStretchPopupOpen(false)}>Done</Button>
             </div>
           }
         </div>
-      
+
       </div>
     </Paper>
   );

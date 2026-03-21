@@ -11,12 +11,12 @@ import { UserInfoContext } from "@/utils/contexts";
 import Webcam from "react-webcam";
 
 
-export default function WaterPopup({setIsWaterPopupOpen}) {
+export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh }) {
 
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
-  const {refreshUserInfo} = useContext(UserInfoContext);
+  const { refreshUserInfo } = useContext(UserInfoContext);
 
   const startTimer = useCallback(() => {
     setIsTimerRunning(true);
@@ -29,6 +29,12 @@ export default function WaterPopup({setIsWaterPopupOpen}) {
       refreshUserInfo();
     }
   }, [progress]);
+
+  const handleSkip = useCallback(() => {
+    sessionStorage.setItem("wb", Date.now() / 1000);
+    setIsWaterPopupOpen(false);
+    triggerTimerRefresh();
+  }, [triggerTimerRefresh]);
 
   return (
     <Paper className={styles.WaterPopup} sx={{ backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.9) }}>
@@ -47,16 +53,16 @@ export default function WaterPopup({setIsWaterPopupOpen}) {
 
         { // Text dependent on whether the user has finished the water break or not
           isTimerFinished ?
-          <div>
-            <Typography variant="h2" sx={{fontFamily: "Chango"}} gutterBottom>Great Job!</Typography>
-            <Typography variant="h6">You have finished your water break!</Typography>
-          </div>
-          :
-          <div>
-            <Typography variant="h1">WATER BREAK!</Typography>
-            <Typography variant="h6">Hydration time! Take a moment to drink some water and refresh yourself.</Typography>
-            <Typography variant="h6">Don't let your pet die!</Typography>
-          </div>
+            <div>
+              <Typography variant="h2" sx={{ fontFamily: "Chango" }} gutterBottom>Great Job!</Typography>
+              <Typography variant="h6">You have finished your water break!</Typography>
+            </div>
+            :
+            <div>
+              <Typography variant="h1">WATER BREAK!</Typography>
+              <Typography variant="h6">Hydration time! Take a moment to drink some water and refresh yourself.</Typography>
+              <Typography variant="h6">Don't let your pet die!</Typography>
+            </div>
         }
 
         <div className={styles.ProgressContainer}>
@@ -64,21 +70,21 @@ export default function WaterPopup({setIsWaterPopupOpen}) {
           { //Begin and Skip Buttons
             !(progress > 0 || isTimerFinished || isTimerRunning) && <div>
               <Button sx={{ backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8) }} variant="contained" color="secondary" onClick={startTimer}>Begin</Button>
-              <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsWaterPopupOpen(false)}>Skip</Button>
+              <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={handleSkip}>Skip</Button>
             </div>
           }
 
           { // Progress Circle
             isTimerRunning &&
             <div>
-              <Webcam className={styles.WebcamView} width={"50%"}/>
+              <Webcam className={styles.WebcamView} width={"50%"} />
             </div>
           }
 
           { // Celebrate and Done Buttons
             isTimerFinished && <div>
               <ChooseConfetti text={"Celebrate 🎉🎉🎉"} />
-              <Button sx={{ mt: "0.5rem"}} variant="outlined" color="secondary" onClick={() => setIsWaterPopupOpen(false)}>Done</Button>
+              <Button sx={{ mt: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsWaterPopupOpen(false)}>Done</Button>
             </div>
           }
         </div>
