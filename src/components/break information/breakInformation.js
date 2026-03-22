@@ -1,10 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import styles from "./breakInformation.module.css";
 import { UserInfoContext } from "@/utils/contexts";
-import { Typography, Chip, Container, Button } from "@mui/material";
+import { Typography, alpha } from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { RefreshContext } from "@/utils/contexts";
+import {List, ListItem, ListItemText} from '@mui/material'
 
 export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpen, setIsStretchPopupOpen }) {
   const [nextWaterTime, setNextWaterTime] = useState(0);
@@ -103,77 +104,35 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
         </Typography>
         <SettingsIcon sx={{ ':hover': { cursor: 'pointer' } }} />
       </div>
-      <Chip
-        label={`Next Water Break: ${waterTimeLeft} minutes`}
-        color="primary"
-        variant="filled"
-        size="medium"
-        className={styles.chip}
-        onClick={() => {
-          console.log("hi")
-        }}
-        onDelete={() => {
-          console.log("bye");
-        }}
-        deleteIcon={<RestartAltIcon />}
-        sx={{
-          '& .MuiChip-deleteIcon': {
-            color: 'rgba(0, 0, 0, 0.4)', // Default color
-            '&:hover': {
-              color: 'rgba(212, 151, 238, 1)', // Color on hover for the icon only
-              transition: 'color 0.3s ease',
-            },
-          },
-        }}
-      />
-      <br />
-      <Chip
-        label={`Next Stretch Break: ${stretchTimeLeft} minutes`}
-        color="primary"
-        variant="filled"
-        size="medium"
-        className={styles.chip}
-        onClick={() => {
-          console.log("hi")
-        }}
-        onDelete={() => {
-          console.log("bye");
-        }}
-        deleteIcon={<RestartAltIcon />}
-        sx={{
-          '& .MuiChip-deleteIcon': {
-            color: 'rgba(0, 0, 0, 0.4)', // Default color
-            '&:hover': {
-              color: 'rgba(212, 151, 238, 1)', // Color on hover for the icon only
-              transition: 'color 0.3s ease',
-            },
-          },
-        }}
-      />
-      <br />
-      <Chip
-        label={`Next Eye Break: ${eyeTimeLeft} minutes`}
-        color="primary"
-        variant="filled"
-        size="medium"
-        className={styles.chip}
-        onClick={() => {
-          console.log("hi")
-        }}
-        onDelete={() => {
-          console.log("bye");
-        }}
-        deleteIcon={<RestartAltIcon />}
-        sx={{
-          '& .MuiChip-deleteIcon': {
-            color: 'rgba(0, 0, 0, 0.4)', // Default color
-            '&:hover': {
-              color: 'rgba(212, 151, 238, 1)', // Color on hover for the icon only
-              transition: 'color 0.3s ease',
-            },
-          },
-        }}
-      />
+      <List dense>
+        <ListItem
+          sx={{ bgcolor: (theme) => alpha(theme.palette.primary.main, 0.75), borderRadius: '1rem', mb: 1, py: 0 }}
+          secondaryAction={<RestartAltIcon sx={{ ':hover': { cursor: 'pointer' } }} />}
+        >
+          <ListItemText
+            primary="Water Break"
+            secondary={`in ${waterTimeLeft} minutes`}
+          />
+        </ListItem>
+        <ListItem
+          sx={{ bgcolor: (theme) => alpha(theme.palette.primary.main, 0.75), borderRadius: '1rem', mb: 1, py: 0 }}
+          secondaryAction={<RestartAltIcon sx={{ ':hover': { cursor: 'pointer' } }} />}
+        >
+          <ListItemText
+            primary="Stretch Break"
+            secondary={`in ${stretchTimeLeft} minutes`}
+          />
+        </ListItem>
+        <ListItem
+          sx={{ bgcolor: (theme) => alpha(theme.palette.primary.main, 0.75), borderRadius: '1rem', py: 0 }}
+          secondaryAction={<RestartAltIcon sx={{ ':hover': { cursor: 'pointer' } }} />}
+        >
+          <ListItemText
+            primary="Eye Break"
+            secondary={`in ${eyeTimeLeft} minutes`}
+          />
+        </ListItem>
+      </List>
     </div>
   );
 }

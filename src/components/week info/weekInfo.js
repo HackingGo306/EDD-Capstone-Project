@@ -11,7 +11,7 @@ export default function WeekInfo() {
   return (
     <div className={styles.WeekInfo}>
       <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 1, height: 'fit-content', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.15) }}>
-        <Typography variant="h6">This Week: </Typography>
+        <Typography variant="h6">This Week:</Typography>
         <Box className={styles.WeekInfoItem}>
           <LocalFireDepartmentIcon sx={{ color: 'rgba(255, 114, 154, 1)', fontSize: '1.5rem', mr: 1 }} />
           Streak: 1

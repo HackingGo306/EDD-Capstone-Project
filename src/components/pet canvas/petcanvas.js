@@ -25,6 +25,7 @@ export default function PetCanvas() {
   const selectedPetRef = useRef({});
 
   useEffect(() => {
+    console.log("trigger pet refresh")
     refreshPets();
   }, [userInfo]);
 
@@ -205,7 +206,7 @@ export default function PetCanvas() {
           <Typography variant="h6">Please log in to see your pets!</Typography>
         </Box>
       </div>
-      <canvas ref={canvasRef}></canvas>
+      <canvas ref={canvasRef} style={{ display: (userInfo.loggedIn ? "block" : "none")}}></canvas>
     </div>
   )
 }

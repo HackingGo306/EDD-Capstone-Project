@@ -2,8 +2,8 @@ import { useRef, useEffect, useState } from "react";
 import { Paper } from "@mui/material";
 import { useWindowSize } from "@react-hook/window-size";
 
-const ROW_HEIGHT = 4;
-const GAP = 16;
+const ROW_HEIGHT = 2;
+const GAP = 2 * 8;
 
 export default function GridItem({ children, columnSpan = 1 }) {
   const ref = useRef(null);
