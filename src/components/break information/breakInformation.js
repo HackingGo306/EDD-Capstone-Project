@@ -69,21 +69,21 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
     if (nextEyeTime === 0 || nextWaterTime === 0 || nextStretchTime === 0) return;
 
     const eyeInterval = setInterval(() => {
-      setEyeTimeLeft(Math.ceil((nextEyeTime - Date.now() / 1000) / 60));
+      setEyeTimeLeft(Math.max(0, Math.ceil((nextEyeTime - Date.now() / 1000) / 60)))
       if (Date.now() / 1000 > nextEyeTime) {
         setIsEyePopupOpen(true);
       }
     }, 1000);
 
     const waterInterval = setInterval(() => {
-      setWaterTimeLeft(Math.ceil((nextWaterTime - Date.now() / 1000) / 60));
+      setWaterTimeLeft(Math.max(0, Math.ceil((nextWaterTime - Date.now() / 1000) / 60)));
       if (Date.now() / 1000 > nextWaterTime) {
         setIsWaterPopupOpen(true);
       }
     }, 1000);
 
     const stretchInterval = setInterval(() => {
-      setStretchTimeLeft(Math.ceil((nextStretchTime - Date.now() / 1000) / 60));
+      setStretchTimeLeft(Math.max(0, Math.ceil((nextStretchTime - Date.now() / 1000) / 60)));
       if (Date.now() / 1000 > nextStretchTime) {
         setIsStretchPopupOpen(true);
       }

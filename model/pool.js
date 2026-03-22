@@ -61,15 +61,6 @@ pool.getConnection((err, connection) => {
       )
     `);
 
-    connection.query(
-      "ALTER TABLE users ADD COLUMN pet VARCHAR(20)",
-      (err) => {
-        if (err && err.code !== "ER_DUP_FIELDNAME") {
-          console.error("Error adding users.pet column:", err);
-        }
-      }
-    );
-
     connection.execute(`
       CREATE TABLE IF NOT EXISTS pets (
         pet_id VARCHAR(10) NOT NULL PRIMARY KEY,
@@ -78,6 +69,8 @@ pool.getConnection((err, connection) => {
         type VARCHAR(20),
         water INT(10),
         energy INT(10),
+        xp INT(10),
+        level INT(10),
         created_at INT(10),
         CONSTRAINT pet_user
         FOREIGN KEY (user_id) REFERENCES users(user_id)

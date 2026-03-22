@@ -25,7 +25,6 @@ export default function PetCanvas() {
   const selectedPetRef = useRef({});
 
   useEffect(() => {
-    console.log("trigger pet refresh")
     refreshPets();
   }, [userInfo]);
 
@@ -34,7 +33,6 @@ export default function PetCanvas() {
     const dpi = window.devicePixelRatio;
 
     let style_height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
-    //get CSS width
     let style_width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
 
     canvas.setAttribute('height', style_height * dpi);
@@ -48,7 +46,13 @@ export default function PetCanvas() {
     if (!canvasRef.current) return;
     if (!pets.length || !userInfo.loggedIn) return;
 
-    let drawnPets = [...pets];
+    let drawnPets = [];
+    // Create a deep copy
+    for (let i = 0; i < pets.length; i++) {
+      drawnPets.push({
+        ...pets[i]
+      });
+    }
 
     const { scaleX, scaleY } = resizeCanvas();
 

@@ -7,14 +7,15 @@ import { Paper, alpha } from "@mui/material";
 import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
-import { UserInfoContext } from "@/utils/contexts";
+import { UserInfoContext, PetsContext } from "@/utils/contexts";
 
-export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh }) {
+export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIsEvolvingPopupOpen }) {
 
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
   const {refreshUserInfo} = useContext(UserInfoContext);
+  const {refreshPets} = useContext(PetsContext);
 
   const startTimer = useCallback(() => {
     const interval = setInterval(() => {
@@ -36,10 +37,18 @@ export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh }) {
   }, [progress]);
 
   useEffect(() => {
-    if (progress === 100) {
-      endUserActivity();
-      refreshUserInfo();
+    async function checkProgress() {
+      if (progress === 100) {
+        const res = await endUserActivity();
+        if (res.data?.petEvolution) {
+          setIsEvolvingPopupOpen(true);
+          setIsEyePopupOpen(false);
+        }
+        refreshUserInfo();
+        refreshPets();
+      }
     }
+    checkProgress();
   }, [progress]);
 
   const handleSkip = useCallback(() => {

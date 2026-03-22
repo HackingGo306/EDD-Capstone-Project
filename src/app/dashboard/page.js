@@ -37,9 +37,9 @@ export default function Settings() {
 
           {isChoosePetPopupOpen && <ChoosePetPopup setIsChoosePetPopupOpen={setIsChoosePetPopupOpen}/>}
 
-          {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
+          {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen}/>}
 
-          {isEyePopupOpen && <EyePopup setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
+          {isEyePopupOpen && <EyePopup setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen}/>}
 
           {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
 

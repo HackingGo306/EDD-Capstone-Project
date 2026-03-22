@@ -37,7 +37,7 @@ Router.post('/begin', async (req, res) => {
 
       if (breakType != "eye" && breakType != "water" && breakType != "stretch") {
         return res.status(400).send({
-          success: false, 
+          success: false,
           message: "Invalid break type"
         });
       }
@@ -73,17 +73,34 @@ Router.post('/end', async (req, res) => {
 
       const { type, timestamp } = JSON.parse(breakData);
 
-      const duration = Math.floor((Date.now() / 1000) - timestamp); 
+      const duration = Math.floor((Date.now() / 1000) - timestamp);
 
       const connection = pool.promise();
       const [result] = await connection.query(`INSERT INTO activities (user_id, type, time, timestamp) VALUES (?, ?, ?, ?)`, [userId, type, duration, timestamp]);
 
       await redisClient.del(`break:${userId}`);
 
+      // Update pet xp
+      let petEvolution = false;
+      const xpEarned = Math.min(10, Math.floor(duration / 20 * 3));
+      const [pet] = await connection.query(`SELECT pet FROM users WHERE user_id = ?`, [userId]);
+      const petId = pet[0].pet;
+      const [oldXP] = await connection.query(`SELECT xp, level FROM pets WHERE pet_id = ?`, [petId]);
+      let newXP = oldXP[0].xp + xpEarned;
+      const level = oldXP[0].level ?? 0;
+      let thresholdLevels = [10, 90, 300, 750, 1500];
+      const threshold = thresholdLevels[level];
+      if (newXP >= threshold) {
+        await connection.query(`UPDATE pets SET level = level + 1 WHERE pet_id = ?`, [petId]);
+        newXP = newXP - threshold;
+        petEvolution = true;
+      }
+      await connection.query('UPDATE pets SET xp = ? WHERE pet_id = ?', [newXP, petId]);
+
       res.status(200).send({
         success: true,
         status: 200,
-        message: "Activity Saved!"
+        data: { petEvolution },
       })
     }
     catch (err) {

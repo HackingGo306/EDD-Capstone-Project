@@ -8,7 +8,7 @@ Router.get("/", async (req, res) => {
     try {
 
       const connection = pool.promise();
-      const [[userInfo]] = await connection.query(`SELECT user_id, name, email FROM users WHERE user_id = ?`, [userId]);
+      const [[userInfo]] = await connection.query(`SELECT user_id, name, email, pet FROM users WHERE user_id = ?`, [userId]);
 
       res.status(200).send({
         success: true,

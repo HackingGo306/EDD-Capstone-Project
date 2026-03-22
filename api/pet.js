@@ -45,8 +45,8 @@ Router.post("/choose", async (req, res) => {
       // Create a new pet in the pet table
       const petId = generateRandomId(10);
       await connection.query(
-        "INSERT INTO pets (pet_id, user_id, name, type, water, energy, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [petId, userId, "Unnamed", pet, 0, 0, Math.floor(Date.now() / 1000)]
+        "INSERT INTO pets (pet_id, user_id, name, type, water, energy, xp, level created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        [petId, userId, "Unnamed", pet, 50, 50, 0, 1, Math.floor(Date.now() / 1000)]
       );
 
       await connection.query(
@@ -77,7 +77,7 @@ Router.get("/", async (req, res) => {
     try {
 
       const connection = pool.promise();
-      const [petInfo] = await connection.query(`SELECT name, type, water, energy, created_at FROM pets WHERE user_id = ?`, [userId]);
+      const [petInfo] = await connection.query(`SELECT * FROM pets WHERE user_id = ?`, [userId]);
 
       res.status(200).send({
         success: true,

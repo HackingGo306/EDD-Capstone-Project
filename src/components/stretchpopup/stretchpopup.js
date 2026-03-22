@@ -7,15 +7,16 @@ import { Paper, alpha } from "@mui/material";
 import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
-import { UserInfoContext } from "@/utils/contexts";
+import { UserInfoContext, PetsContext } from "@/utils/contexts";
 
 
-export default function StretchPopup({ setIsStretchPopupOpen, triggerTimerRefresh }) {
+export default function StretchPopup({ setIsStretchPopupOpen, setIsEvolvingPopup, triggerTimerRefresh }) {
 
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
   const { refreshUserInfo } = useContext(UserInfoContext);
+  const { refreshPets } = useContext(PetsContext);
 
   const startTimer = useCallback(() => {
     const interval = setInterval(() => {
@@ -37,10 +38,18 @@ export default function StretchPopup({ setIsStretchPopupOpen, triggerTimerRefres
   }, [progress]);
 
   useEffect(() => {
-    if (progress === 100) {
-      endUserActivity();
-      refreshUserInfo();
+    async function checkProgress() {
+      if (progress === 100) {
+        const res = await endUserActivity();
+        if (res.data?.petEvolution) {
+          setIsEvolvingPopup(true);
+          setIsStretchPopupOpen(false);
+        }
+        refreshUserInfo();
+        refreshPets();
+      }
     }
+    checkProgress();
   }, [progress]);
 
   const handleSkip = useCallback(() => {

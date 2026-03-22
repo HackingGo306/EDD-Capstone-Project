@@ -23,7 +23,11 @@ const RefreshContext = createContext({ // Add any other states that require re-r
 
 const PetsProvider = ({ children }) => {
   const [pets, setPets] = useState([]);
-  const [refresh, refreshPets] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
+  const refreshPets = useCallback(() => {
+    setRefresh(!refresh);
+  }, [refresh]);
 
   useEffect(() => {
     async function fetchPets() {
@@ -51,7 +55,6 @@ const UserInfoProvider = ({ children }) => {
   const [refresh, setRefresh] = useState(false);
 
   const refreshUserInfo = useCallback(() => {
-    console.log("calling refreshUserInfo");
     setRefresh(!refresh);
   }, [refresh]);
 

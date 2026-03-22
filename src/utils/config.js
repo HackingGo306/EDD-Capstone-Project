@@ -14,6 +14,9 @@ const CUSTOM_THEME = createTheme({
     secondary: {
       main: '#84ACC9',
     },
+    tertiary: {
+      main: 'rgba(239, 161, 183, 1)'
+    },
     text: {
       primary: '#344552',
       secondary: '#2D7AA3',
