@@ -41,7 +41,7 @@ export default function Settings() {
 
           {isEyePopupOpen && <EyePopup setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen}/>}
 
-          {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
+          {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
 
           {isEvolvingPopupOpen && <EvolvingPopup setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
         </div>

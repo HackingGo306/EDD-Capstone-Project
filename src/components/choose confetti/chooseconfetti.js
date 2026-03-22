@@ -8,7 +8,7 @@ import { StarsConfetti } from "../confetti types/stars";
 
 export default function ChooseConfetti({text="Randomize Confetti"}) {
 
-  const randomType = 4;
+  const randomType = Math.floor(Math.random() * 5);
 
   const [confettiType, setConfettiType] = useState(randomType);
 

@@ -1,5 +1,5 @@
 .EvolvingPopup {
-  z-index: 1000;
+  z-index: 10;
   position: fixed;
   top: 10%;
   left: 10%;
@@ -12,4 +12,14 @@
   align-items: center;
   border-radius: 15px;
   box-shadow: 10 10px 10px rgba(0, 0, 0, 0.2)
+}
+
+.EvolvingPopup .EvolvingImage { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.EvolvingPopup .EvolvingImage img {
+  width: 40%;
 }

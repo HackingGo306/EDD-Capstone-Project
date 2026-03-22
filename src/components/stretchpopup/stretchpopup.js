@@ -10,7 +10,7 @@ import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
 import { UserInfoContext, PetsContext } from "@/utils/contexts";
 
 
-export default function StretchPopup({ setIsStretchPopupOpen, setIsEvolvingPopup, triggerTimerRefresh }) {
+export default function StretchPopup({ setIsStretchPopupOpen, setIsEvolvingPopupOpen, triggerTimerRefresh }) {
 
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -42,7 +42,7 @@ export default function StretchPopup({ setIsStretchPopupOpen, setIsEvolvingPopup
       if (progress === 100) {
         const res = await endUserActivity();
         if (res.data?.petEvolution) {
-          setIsEvolvingPopup(true);
+          setIsEvolvingPopupOpen(true);
           setIsStretchPopupOpen(false);
         }
         refreshUserInfo();

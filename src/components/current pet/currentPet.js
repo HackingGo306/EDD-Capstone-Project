@@ -34,7 +34,7 @@ export default function CurrentPet() {
           </div>
           <div className={styles.CurrentPetInfo}>
             <Typography variant="h5" sx={{ mb: '0.25rem' }}>{currentPet.name}</Typography>
-            <Typography sx={{ mb: '0.75rem' }}>Type: {currentPet.type.charAt(0).toUpperCase() + currentPet.type.slice(1)}</Typography>
+            <Typography sx={{ mb: '0.75rem' }}>Level {currentPet?.level ?? 0} {currentPet.type.charAt(0).toUpperCase() + currentPet.type.slice(1)}</Typography>
             <Stack sx={{ width: '100%' }} spacing={2}>
               
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
