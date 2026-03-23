@@ -5,7 +5,7 @@ import { Typography, alpha } from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { RefreshContext } from "@/utils/contexts";
-import {List, ListItem, ListItemText} from '@mui/material'
+import { List, ListItem, ListItemText } from '@mui/material'
 
 export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpen, setIsStretchPopupOpen }) {
   const [nextWaterTime, setNextWaterTime] = useState(0);
@@ -21,9 +21,7 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
   const { userInfo } = useContext(UserInfoContext);
 
   useEffect(() => {
-    // Calculate the next water break time
-    if (!userInfo.activities) return;
-    if (!userInfo.activities.length) return;
+    if (!userInfo.loggedIn) return;
 
     const sessionOpened = Math.floor(parseInt(sessionStorage.login) / 1000) || Date.now() / 1000;
     if (!sessionStorage.wb) sessionStorage.setItem("wb", sessionOpened);
@@ -34,25 +32,31 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
     const sessionEyeTime = parseInt(sessionStorage.eb);
     const sessionStretchTime = parseInt(sessionStorage.sb);
 
+    let latestWaterBreak = { timestamp: sessionWaterTime };
+    let latestEyeBreak = { timestamp: sessionEyeTime };
+    let latestStretchBreak = { timestamp: sessionStretchTime };
+
     // Find the latest water break (greatest id)
-    const latestWaterBreak = userInfo.activities.reduce((max, activity) => {
-      if (activity.type === "water") {
-        return activity.activity_id > max.activity_id ? activity : max;
-      }
-      return max;
-    });
-    const latestEyeBreak = userInfo.activities.reduce((max, activity) => {
-      if (activity.type === "eye") {
-        return activity.activity_id > max.activity_id ? activity : max;
-      }
-      return max;
-    });
-    const latestStretchBreak = userInfo.activities.reduce((max, activity) => {
-      if (activity.type === "stretch") {
-        return activity.activity_id > max.activity_id ? activity : max;
-      }
-      return max;
-    });
+    if (userInfo.activities.length > 0) {
+      latestWaterBreak = userInfo.activities.reduce((max, activity) => {
+        if (activity.type === "water") {
+          return activity.activity_id > max.activity_id ? activity : max;
+        }
+        return max;
+      });
+      latestEyeBreak = userInfo.activities.reduce((max, activity) => {
+        if (activity.type === "eye") {
+          return activity.activity_id > max.activity_id ? activity : max;
+        }
+        return max;
+      });
+      latestStretchBreak = userInfo.activities.reduce((max, activity) => {
+        if (activity.type === "stretch") {
+          return activity.activity_id > max.activity_id ? activity : max;
+        }
+        return max;
+      });
+    }
 
     const prevWaterTime = Math.max(latestWaterBreak.timestamp, sessionWaterTime);
     const prevEyeTime = Math.max(latestEyeBreak.timestamp, sessionEyeTime);
@@ -69,7 +73,7 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
     if (nextEyeTime === 0 || nextWaterTime === 0 || nextStretchTime === 0) return;
 
     const eyeInterval = setInterval(() => {
-      setEyeTimeLeft(Math.max(0, Math.ceil((nextEyeTime - Date.now() / 1000) / 60)))
+      setEyeTimeLeft(Math.max(0, Math.ceil((nextEyeTime - Date.now() / 1000) / 60)));
       if (Date.now() / 1000 > nextEyeTime) {
         setIsEyePopupOpen(true);
       }

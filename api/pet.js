@@ -7,7 +7,8 @@ const generateRandomId = require("../utils/security").generateRandomId;
 Router.post("/choose", async (req, res) => {
   autoSignin(req, res, async (userId) => {
     try {
-      const { pet } = req.body;
+      let { pet, petName } = req.body;
+      if (!petName) petName = "Unnamed";
 
       if (pet != "cat" && pet != "dog" && pet != "fly" && pet != "human") {
         return res.status(400).send({
@@ -18,40 +19,49 @@ Router.post("/choose", async (req, res) => {
         });
       }
 
-      if (!pet) {
-        return res.status(400).send({
-          success: false,
-          status: 400,
-          message: "Missing pet",
-          error: { reason: "Missing pet" },
-        });
-      }
-
       const connection = pool.promise();
       const [currentPet] = await connection.query(
         "SELECT pet FROM users WHERE user_id = ?",
         [userId]
       )
 
-      if (currentPet[0].pet != null) {
+      if (currentPet[0].pet == null) {
         return res.status(400).send({
           success: false,
           status: 400,
-          message: "Pet already chosen",
-          error: { reason: "Pet already chosen" },
+          message: "No egg",
+          error: { reason: "No egg to hatch!" },
+        });
+      }
+
+      const [petInfo] = await connection.query(
+        "SELECT pet_id, name, type, xp, level FROM pets WHERE pet_id = ?",
+        [currentPet[0].pet]
+      );
+
+      if (petInfo[0].type != "egg") {
+        return res.status(400).send({
+          success: false,
+          status: 400,
+          message: "No egg to hatch!",
+          error: { reason: "No egg to hatch!" },
+        });
+      }
+
+      if (petInfo[0].level == 0) {
+        return res.status(400).send({
+          success: false,
+          status: 400,
+          message: "Egg too young!",
+          error: { reason: "Egg too young!" },
         });
       }
 
       // Create a new pet in the pet table
-      const petId = generateRandomId(10);
+      const petId = petInfo[0].pet_id;
       await connection.query(
-        "INSERT INTO pets (pet_id, user_id, name, type, water, energy, xp, level created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        [petId, userId, "Unnamed", pet, 50, 50, 0, 1, Math.floor(Date.now() / 1000)]
-      );
-
-      await connection.query(
-        "UPDATE users SET pet = ? WHERE user_id = ?",
-        [petId, userId]
+        "UPDATE pets set name = ?, type = ?, created_at = ? WHERE pet_id = ?",
+        [petName, pet, Math.floor(Date.now() / 1000), petId]
       );
 
       res.status(200).send({

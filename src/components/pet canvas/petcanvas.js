@@ -103,7 +103,7 @@ export default function PetCanvas() {
         drawnPets[i].y += 0.3 * drawnPets[i].vy;
 
         const img = new Image();
-        img.src = "/Melt Human.gif";
+        img.src = "/Human/Melt Human.gif";
 
         if (drawnPets[i].x >= 270 || drawnPets[i].x <= 0) {
           drawnPets[i].vx *= -1;

@@ -4,11 +4,12 @@ import styles from "./waterpopup.module.css";
 import { useState, useCallback, useEffect, useContext } from "react";
 import { Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
-import { Button, CircularProgress } from "@mui/material";
+import { Button } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
-import { UserInfoContext } from "@/utils/contexts";
 import Webcam from "react-webcam";
+import { PetsContext, UserInfoContext } from "@/utils/contexts";
+import { petDictionary } from "@/utils/tools";
 
 
 export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh }) {
@@ -16,7 +17,18 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
-  const { refreshUserInfo } = useContext(UserInfoContext);
+  const { userInfo, refreshUserInfo } = useContext(UserInfoContext);
+  const { pets, refreshPets } = useContext(PetsContext);
+  const [currentPet, setCurrentPet] = useState({ type: '', level: 0 });
+
+  useEffect(() => {
+    if (!userInfo?.loggedIn) return;
+    if (!pets?.length) return;
+
+    const userPet = pets.find((pet) => pet.pet_id == userInfo.data.pet);
+    if (!userPet) return;
+    setCurrentPet(userPet);
+  }, [pets, userInfo]);
 
   const startTimer = useCallback(() => {
     setIsTimerRunning(true);
@@ -44,9 +56,9 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
             if (isTimerRunning) {
               return <div />;
             } else if (isTimerFinished) {
-              return <img src="/Smirk Human.gif" alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
             } else {
-              return <img src="/Thirsty Human.gif" alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
             }
           })()
         }

@@ -103,6 +103,32 @@ async function createAccount({ name, email, userInfo }) {
   }
 }
 
+async function createNewPet({ user_id }) {
+  try {
+    const pet_id = generateRandomId(10);
+    const connection = pool.promise();
+
+    await connection.query(
+      "INSERT INTO pets SET pet_id = ?, user_id = ?, name = ?, type = ?, energy = ?, water = ?, xp = ?, level = ?, created_at = ?",
+      [pet_id, user_id, "Unnamed", "egg", 50, 50, 0, 0, Math.floor(Date.now() / 1000)]
+    );
+
+    await connection.query(
+      "UPDATE users SET pet = ? WHERE user_id = ?",
+      [pet_id, user_id]
+    );
+
+    return {
+      success: true,
+      status: 200,
+      message: "Pet Created!",
+      data: { pet_id },
+    };
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 Router.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -169,9 +195,6 @@ Router.post("/signup", async (req, res) => {
   try {
     const { email, name, password } = req.body;
 
-    console.log("Signup request received with:", { email, name });
-    // TODO: validate password strength
-
     const [salt, hashed_password] = hashing(password);
 
     const response = await createAccount({
@@ -182,6 +205,8 @@ Router.post("/signup", async (req, res) => {
         hashed_password,
       },
     });
+
+    await createNewPet({ user_id: response.data.user_id });
 
     const { success, data } = response;
 

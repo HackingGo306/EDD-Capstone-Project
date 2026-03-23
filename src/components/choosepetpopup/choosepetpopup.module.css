@@ -19,3 +19,8 @@
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
+.ChoosePetPopup .PetImage {
+  width: 25%;
+  height: auto;
+}

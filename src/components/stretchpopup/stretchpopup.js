@@ -8,15 +8,26 @@ import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
 import { UserInfoContext, PetsContext } from "@/utils/contexts";
-
+import { petDictionary } from "@/utils/tools";
 
 export default function StretchPopup({ setIsStretchPopupOpen, setIsEvolvingPopupOpen, triggerTimerRefresh }) {
 
   const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
-  const { refreshUserInfo } = useContext(UserInfoContext);
-  const { refreshPets } = useContext(PetsContext);
+  const { userInfo, refreshUserInfo } = useContext(UserInfoContext);
+  const { pets, refreshPets } = useContext(PetsContext);
+  const [currentPet, setCurrentPet] = useState({ type: '', level: 0 });
+
+  useEffect(() => {
+    if (!userInfo?.loggedIn) return;
+    if (!pets?.length) return;
+
+    const userPet = pets.find((pet) => pet.pet_id == userInfo.data.pet);
+    if (!userPet) return;
+    setCurrentPet(userPet);
+
+  }, [pets, userInfo]);
 
   const startTimer = useCallback(() => {
     const interval = setInterval(() => {
@@ -67,9 +78,9 @@ export default function StretchPopup({ setIsStretchPopupOpen, setIsEvolvingPopup
             if (isTimerRunning) {
               return <div />;
             } else if (isTimerFinished) {
-              return <img src="/Smirk Human.gif" alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
             } else {
-              return <img src="/Melt Human.gif" alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
             }
           })()
         }

@@ -13,6 +13,7 @@ export default function ChooseConfetti({text="Randomize Confetti"}) {
   const [confettiType, setConfettiType] = useState(randomType);
 
   const randomizeConfetti = () => {
+    const randomType = Math.floor(Math.random() * 5);
     setConfettiType(randomType);
   }
 

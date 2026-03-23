@@ -9,8 +9,8 @@ async function getPetInfo() {
   return { data: {} }
 }
 
-async function choosePet({ pet }) {
-  const res = await requestHandler(AxiosInstance.post(`/pet/choose`, { pet }));
+async function choosePet({ pet, petName }) {
+  const res = await requestHandler(AxiosInstance.post(`/pet/choose`, { pet, petName }));
   if (res.status == 200) {
     return { data: res.data };
   }

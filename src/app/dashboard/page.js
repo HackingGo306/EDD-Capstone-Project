@@ -35,15 +35,15 @@ export default function Settings() {
           <br />
           <DashboardGrid setIsWaterPopupOpen={setIsWaterPopupOpen} setIsEyePopupOpen={setIsEyePopupOpen} setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />
 
-          {isChoosePetPopupOpen && <ChoosePetPopup setIsChoosePetPopupOpen={setIsChoosePetPopupOpen}/>}
+          {isChoosePetPopupOpen && <ChoosePetPopup setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />}
 
-          {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen}/>}
+          {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
 
-          {isEyePopupOpen && <EyePopup setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen}/>}
+          {isEyePopupOpen && <EyePopup setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
 
-          {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} triggerTimerRefresh={triggerTimerRefresh}/>}
+          {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} triggerTimerRefresh={triggerTimerRefresh} />}
 
-          {isEvolvingPopupOpen && <EvolvingPopup setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
+          {isEvolvingPopupOpen && <EvolvingPopup setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />}
         </div>
       </div>
     </ThemeProvider>

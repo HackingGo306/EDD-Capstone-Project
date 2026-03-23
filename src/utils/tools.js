@@ -15,4 +15,8 @@ async function requestHandler(request) {
   }
 }
 
-export { requestHandler };
+const petDictionary = {
+  cat: ["/Cat Pet/Cat 1.png", "/Cat Pet/Cat 2.png", "/Cat Pet/Cat 3.png", "/Cat Pet/Cat 4.png"],
+};
+
+export { requestHandler, petDictionary };

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useContext } from "react";
 import styles from "./choosepetpopup.module.css";
-import { Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
 import { Button } from "@mui/material";
 import { choosePet } from "@/api/PetAPI";
@@ -11,6 +11,7 @@ import { PetsContext } from "@/utils/contexts";
 export default function ChoosePetPopup({ setIsChoosePetPopupOpen }) {
 
   const [pet, setPet] = useState(0);
+  const [petName, setPetName] = useState("");
   const { refreshPets } = useContext(PetsContext);
   const petOptions = ["Cat", "Dog", "Fly", "Human"];
 
@@ -18,14 +19,14 @@ export default function ChoosePetPopup({ setIsChoosePetPopupOpen }) {
     if (!pet) {
       return;
     }
-    const lowercasePet = pet.toLowerCase(); 
-    choosePet({ pet: lowercasePet });
+    const lowercasePet = pet.toLowerCase();
+    choosePet({ pet: lowercasePet, petName: petName });
     setIsChoosePetPopupOpen(false);
     refreshPets();
-  }, [pet]);
+  }, [pet, petName]);
 
   return (
-    <Paper className={styles.ChoosePetPopup} sx={{ backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.9) }}>
+    <Paper className={styles.ChoosePetPopup} sx={{ backgroundColor: (theme) => theme.palette.primary.main }}>
       <div className={styles.PopupContent}>
 
         { // display image of a cracked egg with glowing golden light
@@ -35,7 +36,8 @@ export default function ChoosePetPopup({ setIsChoosePetPopupOpen }) {
         {
 
           <div>
-            <Typography variant="h1">Your egg is hatching... Choose your pet!</Typography>
+            <Typography variant="h1" gutterBottom>Your egg is hatching...</Typography>
+            <Typography variant="h5">Choose your pet!</Typography>
           </div>
         }
 
@@ -56,9 +58,7 @@ export default function ChoosePetPopup({ setIsChoosePetPopupOpen }) {
           {
             (() => {
               if (pet === "Cat") {
-                return <div>
-                  <Typography variant="h1">Cat</Typography>
-                </div>
+                return <img className={styles.PetImage} src="/Cat Pet/Cat 1.png" alt="Cat" />
               } else if (pet === "Dog") {
                 return <div>
                   <Typography variant="h1">Dog</Typography>
@@ -74,9 +74,20 @@ export default function ChoosePetPopup({ setIsChoosePetPopupOpen }) {
               }
             })()
           }
+          {
+            (pet != 0) &&
+            <div>
+              <TextField variant="standard" color="secondary" label="Give it a name!" size="small" onChange={(e) => setPetName(e.target.value)}
+                InputProps={{
+                  inputProps: {
+                    maxLength: 20 // Set the maximum length to 10 characters
+                  }
+                }} />
+            </div>
+          }
 
           {
-            <Button sx={{ mt: "1.0rem" }} variant="outlined" color="secondary" onClick={handlePetConfirm}>Done</Button>
+            <Button sx={{ mt: "1.0rem" }} variant="contained" color="secondary" onClick={handlePetConfirm}>Confirm</Button>
           }
 
         </div>
