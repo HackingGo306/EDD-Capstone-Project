@@ -3,6 +3,7 @@ import styles from './petcanvas.module.css'
 import { useWindowSize } from "@react-hook/window-size";
 import { PetsContext, UserInfoContext } from "@/utils/contexts";
 import { Box, Typography } from "@mui/material";
+import { petDictionary } from "@/utils/tools";
 
 const dist = function (x1, y1, x2, y2) {
   return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
@@ -103,7 +104,7 @@ export default function PetCanvas() {
         drawnPets[i].y += 0.3 * drawnPets[i].vy;
 
         const img = new Image();
-        img.src = "/Human/Melt Human.gif";
+        img.src = petDictionary[drawnPets[i].type]?.[drawnPets[i].level - 1] ?? "/Human/Melt Human.gif";
 
         if (drawnPets[i].x >= 270 || drawnPets[i].x <= 0) {
           drawnPets[i].vx *= -1;
@@ -116,13 +117,13 @@ export default function PetCanvas() {
 
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-        if (dist(mouseX, mouseY, drawnPets[i].x + 15, drawnPets[i].y + 10) < 10) {
+        if (dist(mouseX, mouseY, drawnPets[i].x + 15, drawnPets[i].y + 15) < 10) {
           canvasRef.current.style.cursor = "pointer";
           if (clickRef.current) {
             selectedPetRef.current = drawnPets[i];
           }
         }
-        ctx.arc(drawnPets[i].x + 15, drawnPets[i].y + 10, 10, 0, 2 * Math.PI);
+        ctx.arc(drawnPets[i].x + 15, drawnPets[i].y + 15, 10, 0, 2 * Math.PI);
         ctx.fill();
       }
 

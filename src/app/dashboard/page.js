@@ -21,7 +21,7 @@ export default function Settings() {
   }, []);
   const { triggerTimerRefresh } = useContext(RefreshContext);
 
-  const [isWaterPopupOpen, setIsWaterPopupOpen] = useState(false);
+  const [isWaterPopupOpen, setIsWaterPopupOpen] = useState(true);
   const [isEyePopupOpen, setIsEyePopupOpen] = useState(false);
   const [isStretchPopupOpen, setIsStretchPopupOpen] = useState(false);
   const [isEvolvingPopupOpen, setIsEvolvingPopupOpen] = useState(false);

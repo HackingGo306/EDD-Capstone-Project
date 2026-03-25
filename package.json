@@ -16,6 +16,8 @@
     "@mui/material": "^7.3.8",
     "@mui/x-charts": "^8.27.4",
     "@react-hook/window-size": "^3.1.1",
+    "@tensorflow-models/coco-ssd": "^2.2.3",
+    "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.13.5",
     "canvas-confetti": "^1.9.4",
     "connect-redis": "^9.0.0",
