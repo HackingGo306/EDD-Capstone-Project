@@ -34,7 +34,7 @@ export default function WaterStats() {
         if (activities[i].timestamp * 1000 < Date.now() - 6 * 24 * 60 * 60 * 1000) continue;
         if (activities[i].type === 'water') {
           const dayIndex = (new Date(activities[i].timestamp * 1000).getDay() - startDay + 6) % 7;
-          newWaterData[dayIndex] += Math.round(activities[i].time * 100 / 60) / 100;
+          newWaterData[dayIndex] += activities[i].time
         }
       }
 
@@ -49,7 +49,7 @@ export default function WaterStats() {
           Water Break
         </Typography>
         <LineChart
-          series={[{ data: waterData, label: 'uv', area: true, showMark: false }]}
+          series={[{ data: waterData, label: 'Fluid Ounces', area: true, showMark: false }]}
           xAxis={[{ scaleType: 'point', data: xLabels, height: 25 }]}
           yAxis={[
             { id: 'leftAxis', width: 25 },
