@@ -16,7 +16,8 @@ async function requestHandler(request) {
 }
 
 const petDictionary = {
-  cat: ["/Cat Pet/Cat 1.png", "/Cat Pet/Cat 2.png", "/Cat Pet/Cat 3.png", "/Cat Pet/Cat 4.png"],
+  egg: ["/Egg Pet/Egg 1.png", "/Egg Pet/Egg 3.png"],
+  cat: ["", "/Cat Pet/Cat 1.png", "/Cat Pet/Cat 2.png", "/Cat Pet/Cat 3.png", "/Cat Pet/Cat 4.png"],
 };
 
 export { requestHandler, petDictionary };

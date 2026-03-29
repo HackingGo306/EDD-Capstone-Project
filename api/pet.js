@@ -8,9 +8,9 @@ Router.post("/choose", async (req, res) => {
   autoSignin(req, res, async (userId) => {
     try {
       let { pet, petName } = req.body;
-      if (!petName) petName = "Unnamed";
+      if (!petName || petName.length > 20) petName = "Unnamed";
 
-      if (pet != "cat" && pet != "dog" && pet != "fly" && pet != "human") {
+      if (pet != "cat" && pet != "dog" && pet != "fly" && pet != "emoji") {
         return res.status(400).send({
           success: false,
           status: 400,

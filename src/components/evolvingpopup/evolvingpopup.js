@@ -33,6 +33,7 @@ export default function EvolvingPopup({setIsEvolvingPopupOpen, setIsChoosePetPop
     setCurrentPet(userPet);
 
     if (userPet.level == 1) {
+      
       setIsChoosePetPopupOpen(true);
     }
   }, [userInfo, pets]);
@@ -41,9 +42,9 @@ export default function EvolvingPopup({setIsEvolvingPopupOpen, setIsChoosePetPop
     <Paper className={styles.EvolvingPopup} sx={{ backgroundColor: (theme) => theme.palette.primary.main, boxShadow: `0px 0.5rem 5rem rgba(114, 201, 255, 0.9)`, }}>
       <div className={styles.PopupContent}>
         <div className={styles.EvolvingImage}>
-          <img className={styles.PetImage} src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Previous Pet" />
+          <img className={styles.PetImage} src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Previous Pet" />
           <KeyboardDoubleArrowUpIcon sx={{ fontSize: 100, color: 'rgba(255, 114, 154, 1)' }} />
-          <img className={styles.PetImage} src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Evolved Pet" />
+          <img className={styles.PetImage} src={petDictionary[currentPet.type]?.[currentPet.level + 1]} alt="Evolved Pet" />
         </div>
         <Typography variant="h6">Your pet is...</Typography>
         <Typography variant="h1">EVOLVING!</Typography>

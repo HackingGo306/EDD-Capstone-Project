@@ -6,7 +6,7 @@ import { TextField, Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
 import { Button } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
-import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
+import { beginUserActivity, endUserActivity, skipUserActivity } from "@/api/ActivitiesAPI";
 import Webcam from "react-webcam";
 import { PetsContext, UserInfoContext } from "@/utils/contexts";
 import { petDictionary } from "@/utils/tools";
@@ -17,9 +17,9 @@ import * as cocoSsd from "@tensorflow-models/coco-ssd";
 
 export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh }) {
 
-  const [progress, setProgress] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
+  const [waterAmount, setWaterAmount] = useState(0);
   const { userInfo, refreshUserInfo } = useContext(UserInfoContext);
   const { pets, refreshPets } = useContext(PetsContext);
   const [currentPet, setCurrentPet] = useState({ type: '', level: 0 });
@@ -29,7 +29,6 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
 
   useEffect(() => {
     cocoSsd.load().then((model) => {
-      console.log(model, "loaded");
       setModel(model);
     });
   }, []);
@@ -46,7 +45,7 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
   const startTimer = useCallback(() => {
     setIsTimerRunning(true);
     beginUserActivity({ type: "water" });
-  }, [progress]);
+  }, []);
 
   useEffect(() => {
     // get camera stream and load coco model
@@ -64,7 +63,13 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
         // Perform inference
         htmlImage.onload = async () => {
           const predictions = await model.detect(htmlImage);
-          console.log(predictions);
+          for (const pred of predictions) {
+            if (pred.class == "bottle") {
+              setIsTimerRunning(false);
+              setIsTimerFinished(true);
+              break;
+            }
+          }
         }
       }
 
@@ -76,18 +81,21 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
     }
   }, [isTimerRunning, cameraRef, model]);
 
-  useEffect(() => {
-    if (progress === 100) {
-      endUserActivity();
-      refreshUserInfo();
-    }
-  }, [progress]);
-
   const handleSkip = useCallback(() => {
     sessionStorage.setItem("wb", Date.now() / 1000);
+    skipUserActivity({ type: "water" });
     setIsWaterPopupOpen(false);
     triggerTimerRefresh();
+    setTimeout(refreshPets, 100);
   }, [triggerTimerRefresh]);
+
+  const handleWater = useCallback(async () => {
+    setIsWaterPopupOpen(false);
+    await endUserActivity( waterAmount );
+    setTimeout(triggerTimerRefresh, 100);
+    setTimeout(refreshUserInfo, 100);
+    setTimeout(refreshPets, 100);
+  }, [triggerTimerRefresh, waterAmount]);
 
   return (
     <Paper className={styles.WaterPopup} sx={{ backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.9) }}>
@@ -97,9 +105,9 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
             if (isTimerRunning) {
               return <div />;
             } else if (isTimerFinished) {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} />;
             } else {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
+              return <div> <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} /> <img src="Water.png" alt="Water" width={300} height={300} /> </div>;
             }
           })()
         }
@@ -121,7 +129,7 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
         <div className={styles.ProgressContainer}>
 
           { //Begin and Skip Buttons
-            !(progress > 0 || isTimerFinished || isTimerRunning) && <div>
+            !(isTimerFinished || isTimerRunning) && <div>
               <Button sx={{ backgroundColor: (theme) => alpha(theme.palette.secondary.main, 0.8) }} variant="contained" color="secondary" onClick={startTimer}>Begin</Button>
               <Button sx={{ ml: "0.5rem" }} variant="outlined" color="secondary" onClick={handleSkip}>Skip</Button>
             </div>
@@ -130,11 +138,8 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
           { // Progress Circle
             isTimerRunning &&
             <div>
-              <Webcam className={styles.WebcamView} ref={cameraRef} width={"50%"} screenshotFormat="image/jpeg" mirrored={true} audio={false}/>
+              <Webcam className={styles.WebcamView} ref={cameraRef} width={"50%"} mirrored={true} audio={false} />
               <br />
-              <TextField sx={{ mb: "0.5rem", mt: "0.5rem" }} variant="standard" type="number" color="secondary" label="Amount" onChange={(e) => setPetName(e.target.value)} />
-              <br />
-              <Button variant="contained" color="secondary" onClick={() => { console.log("click done") }}>Confirm</Button>
               <Button sx={{ ml: "0.5rem" }} variant="contained" color="secondary" onClick={handleSkip}>Skip</Button>
             </div>
           }
@@ -142,7 +147,9 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
           { // Celebrate and Done Buttons
             isTimerFinished && <div>
               <ChooseConfetti text={"Celebrate 🎉🎉🎉"} />
-              <Button sx={{ mt: "0.5rem" }} variant="outlined" color="secondary" onClick={() => setIsWaterPopupOpen(false)}>Done</Button>
+              <TextField sx={{ mb: "0.5rem", mt: "0.5rem" }} variant="standard" type="number" color="secondary" label="Approx. amount (oz)" onChange={(e) => setWaterAmount(e.target.value)} />
+              <br />
+              <Button variant="contained" color="secondary" onClick={handleWater}>Confirm</Button>
             </div>
           }
         </div>

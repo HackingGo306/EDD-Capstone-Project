@@ -13,7 +13,7 @@ export default function ChoosePetPopup({ setIsChoosePetPopupOpen }) {
   const [pet, setPet] = useState(0);
   const [petName, setPetName] = useState("");
   const { refreshPets } = useContext(PetsContext);
-  const petOptions = ["Cat", "Dog", "Fly", "Human"];
+  const petOptions = ["Cat", "Dog", "Fly", "Emoji"];
 
   const handlePetConfirm = useCallback(() => {
     if (!pet) {
@@ -67,9 +67,9 @@ export default function ChoosePetPopup({ setIsChoosePetPopupOpen }) {
                 return <div>
                   <Typography variant="h1">Fly</Typography>
                 </div>
-              } else if (pet === "Human") {
+              } else if (pet === "Emoji") {
                 return <div>
-                  <Typography variant="h1">Human</Typography>
+                  <Typography variant="h1">Emoji</Typography>
                 </div>
               }
             })()

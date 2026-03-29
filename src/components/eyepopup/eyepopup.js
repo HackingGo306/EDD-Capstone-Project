@@ -6,14 +6,13 @@ import { Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
 import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
-import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
+import { beginUserActivity, endUserActivity, skipUserActivity } from "@/api/ActivitiesAPI";
 import { UserInfoContext, PetsContext } from "@/utils/contexts";
 import { petDictionary } from "@/utils/tools";
 
-export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIsEvolvingPopupOpen }) {
+export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIsEvolvingPopupOpen, isTimerRunning, setIsTimerRunning }) {
 
   const [progress, setProgress] = useState(0);
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
   const {userInfo, refreshUserInfo} = useContext(UserInfoContext);
   const {pets, refreshPets} = useContext(PetsContext);
@@ -64,8 +63,10 @@ export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIs
 
   const handleSkip = useCallback(() => {
     sessionStorage.setItem("eb", Date.now() / 1000);
+    skipUserActivity({ type: "eye" });
     setIsEyePopupOpen(false);
     triggerTimerRefresh();
+    setTimeout(refreshPets, 100);
   }, [triggerTimerRefresh]);
 
   return (
@@ -77,9 +78,9 @@ export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIs
             if (isTimerRunning) {
               return <div />;
             } else if (isTimerFinished) {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} />;
             } else {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} />;
             }
           })()
         }

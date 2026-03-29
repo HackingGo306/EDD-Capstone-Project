@@ -6,7 +6,7 @@ import { Typography } from "@mui/material";
 import { Paper, alpha } from "@mui/material";
 import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
-import { beginUserActivity, endUserActivity } from "@/api/ActivitiesAPI";
+import { beginUserActivity, endUserActivity, skipUserActivity } from "@/api/ActivitiesAPI";
 import { UserInfoContext, PetsContext } from "@/utils/contexts";
 import { petDictionary } from "@/utils/tools";
 
@@ -65,8 +65,10 @@ export default function StretchPopup({ setIsStretchPopupOpen, setIsEvolvingPopup
 
   const handleSkip = useCallback(() => {
     sessionStorage.setItem("sb", Date.now() / 1000);
+    skipUserActivity({ type: "stretch" });
     setIsStretchPopupOpen(false);
     triggerTimerRefresh();
+    setTimeout(refreshPets, 100);
   }, [triggerTimerRefresh]);
 
   return (
@@ -78,9 +80,9 @@ export default function StretchPopup({ setIsStretchPopupOpen, setIsEvolvingPopup
             if (isTimerRunning) {
               return <div />;
             } else if (isTimerFinished) {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} />;
             } else {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level - 1]} alt="Pet" width={300} height={300} />;
+              return <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} />;
             }
           })()
         }

@@ -12,6 +12,7 @@ export default function CurrentPet() {
   const { pets, refreshPets } = useContext(PetsContext);
   const { userInfo, refreshUserInfo } = useContext(UserInfoContext);
   const [xpNeeded, setXpNeeded] = useState(10000);
+  const [imgSrc, setImgSrc] = useState("/Emoji/Melt Emoji.gif");
 
   useEffect(() => {
     if (!userInfo?.loggedIn) return;
@@ -24,6 +25,15 @@ export default function CurrentPet() {
     setXpNeeded(levelThresholds[pet.level]);
 
     setCurrentPet(pet);
+
+    let petImg = petDictionary[pet.type]?.[pet.level] || "/Emoji/Melt Emoji.gif";
+    if (pet.type == "egg") {
+      if (pet.xp >= 5) {
+        petImg = "/Egg Pet/Egg 2.png";
+      }
+    }
+
+    setImgSrc(petImg);
   }, [pets, userInfo]);
 
   return (
@@ -31,7 +41,7 @@ export default function CurrentPet() {
       <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 1, height: 'fit-content' }}>
         <div className={styles.CurrentPetContent}>
           <div className={styles.CurrentPetImage}>
-            <img src={petDictionary[currentPet.type]?.[currentPet.level - 1] || "/Human/Melt Human.gif"} alt="Pet" />
+            <img src={imgSrc} alt="Pet" />
           </div>
           <div className={styles.CurrentPetInfo}>
             <Typography variant="h5" sx={{ mb: '0.25rem' }}>{currentPet.name}</Typography>

@@ -25,12 +25,20 @@ async function beginUserActivity({type}) {
   return { data: {} }
 }
 
-async function endUserActivity() {
-  const res = await requestHandler(AxiosInstance.post(`/activities/end`, {}));
+async function endUserActivity(waterDrank = 0) {
+  const res = await requestHandler(AxiosInstance.post(`/activities/end`, {waterDrank}));
   if (res.status == 200) {
     return { data: res.data };
   }
   return { data: {} }
 }
 
-export { getUserActivities, addUserActivity, beginUserActivity, endUserActivity };
+async function skipUserActivity({type}) {
+  const res = await requestHandler(AxiosInstance.post(`/activities/skip`, {type}));
+  if (res.status == 200) {
+    return { data: res.data };
+  }
+  return { data: {} }
+}
+
+export { getUserActivities, addUserActivity, beginUserActivity, endUserActivity, skipUserActivity };

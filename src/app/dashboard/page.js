@@ -26,11 +26,13 @@ export default function Settings() {
   const [isStretchPopupOpen, setIsStretchPopupOpen] = useState(false);
   const [isEvolvingPopupOpen, setIsEvolvingPopupOpen] = useState(false);
   const [isChoosePetPopupOpen, setIsChoosePetPopupOpen] = useState(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   return (
     <ThemeProvider theme={CUSTOM_THEME}>
       <div className={styles.page}>
         <div className={styles.Dashboard}>
+          <div className={`${styles.overlay} ${isTimerRunning ? styles.active : styles.hidden}`}/>
           <ResponsiveAppBar />
           <br />
           <DashboardGrid setIsWaterPopupOpen={setIsWaterPopupOpen} setIsEyePopupOpen={setIsEyePopupOpen} setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />
@@ -39,7 +41,7 @@ export default function Settings() {
 
           {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
 
-          {isEyePopupOpen && <EyePopup setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
+          {isEyePopupOpen && <EyePopup isTimerRunning={isTimerRunning} setIsTimerRunning={setIsTimerRunning} setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
 
           {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} triggerTimerRefresh={triggerTimerRefresh} />}
 

@@ -104,7 +104,7 @@ export default function PetCanvas() {
         drawnPets[i].y += 0.3 * drawnPets[i].vy;
 
         const img = new Image();
-        img.src = petDictionary[drawnPets[i].type]?.[drawnPets[i].level - 1] ?? "/Human/Melt Human.gif";
+        img.src = petDictionary[drawnPets[i].type]?.[drawnPets[i].level] ?? "/Emoji/Melt Emoji.gif";
 
         if (drawnPets[i].x >= 270 || drawnPets[i].x <= 0) {
           drawnPets[i].vx *= -1;
@@ -114,17 +114,12 @@ export default function PetCanvas() {
         }
 
         ctx.drawImage(img, drawnPets[i].x, drawnPets[i].y, 30, 30);
-
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
         if (dist(mouseX, mouseY, drawnPets[i].x + 15, drawnPets[i].y + 15) < 10) {
           canvasRef.current.style.cursor = "pointer";
           if (clickRef.current) {
             selectedPetRef.current = drawnPets[i];
           }
         }
-        ctx.arc(drawnPets[i].x + 15, drawnPets[i].y + 15, 10, 0, 2 * Math.PI);
-        ctx.fill();
       }
 
       if (selectedPetRef.current.name) { // Draw pet info on right side
