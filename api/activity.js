@@ -100,7 +100,10 @@ Router.post('/end', async (req, res) => { // TODO: handle water breaks that have
 
       // Get current user pet
       let petEvolution = false;
-      const xpEarned = Math.min(10, Math.floor(duration / 20 * 3));
+      let xpEarned = Math.min(10, Math.floor(duration / 20 * 3));
+      if (type == "water") {
+        xpEarned = Math.min(10, duration);
+      }
       const [pet] = await connection.query(`SELECT pet FROM users WHERE user_id = ?`, [userId]);
       const petId = pet[0].pet;
       const [oldPetData] = await connection.query(`SELECT xp, water, energy, level FROM pets WHERE pet_id = ?`, [petId]);

@@ -9,13 +9,13 @@ import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity, skipUserActivity } from "@/api/ActivitiesAPI";
 import Webcam from "react-webcam";
 import { PetsContext, UserInfoContext } from "@/utils/contexts";
-import { petDictionary } from "@/utils/tools";
+import { petImg } from "@/utils/tools";
 
 import * as tf from "@tensorflow/tfjs";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 
 
-export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh }) {
+export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh, setIsEvolvingPopupOpen }) {
 
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerFinished, setIsTimerFinished] = useState(false);
@@ -91,8 +91,11 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
 
   const handleWater = useCallback(async () => {
     setIsWaterPopupOpen(false);
-    await endUserActivity( waterAmount );
-    setTimeout(triggerTimerRefresh, 100);
+    let res = await endUserActivity(waterAmount);
+    if (res.data?.petEvolution) {
+      setIsEvolvingPopupOpen(true);
+      setIsWaterPopupOpen(false);
+    }
     setTimeout(refreshUserInfo, 100);
     setTimeout(refreshPets, 100);
   }, [triggerTimerRefresh, waterAmount]);
@@ -105,9 +108,12 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh })
             if (isTimerRunning) {
               return <div />;
             } else if (isTimerFinished) {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} />;
+              return <img src={petImg(currentPet.type, currentPet.level, currentPet.xp)} alt="Pet" width={300} height={300} />;
             } else {
-              return <div> <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} /> <img src="Water.png" alt="Water" width={300} height={300} /> </div>;
+              if (currentPet.type === "emoji") {
+                return <img src="/Emoji Pet/Thirsty Emoji.gif" alt="Pet" width={300} height={300} />;
+              }
+              return <div> <img src={petImg(currentPet.type, currentPet.level, currentPet.xp)} alt="Pet" width={300} height={300} /> <img src="Water.png" alt="Water" width={300} height={300} /> </div>;
             }
           })()
         }

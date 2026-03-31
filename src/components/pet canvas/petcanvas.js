@@ -3,7 +3,7 @@ import styles from './petcanvas.module.css'
 import { useWindowSize } from "@react-hook/window-size";
 import { PetsContext, UserInfoContext } from "@/utils/contexts";
 import { Box, Typography } from "@mui/material";
-import { petDictionary } from "@/utils/tools";
+import { petImg } from "@/utils/tools";
 
 const dist = function (x1, y1, x2, y2) {
   return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
@@ -104,7 +104,7 @@ export default function PetCanvas() {
         drawnPets[i].y += 0.3 * drawnPets[i].vy;
 
         const img = new Image();
-        img.src = petDictionary[drawnPets[i].type]?.[drawnPets[i].level] ?? "/Emoji/Melt Emoji.gif";
+        img.src = petImg(drawnPets[i].type, drawnPets[i].level, drawnPets[i].xp);
 
         if (drawnPets[i].x >= 270 || drawnPets[i].x <= 0) {
           drawnPets[i].vx *= -1;

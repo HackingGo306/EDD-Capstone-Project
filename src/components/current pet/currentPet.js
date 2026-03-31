@@ -5,7 +5,7 @@ import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import { PetsContext, UserInfoContext } from '@/utils/contexts';
-import { petDictionary } from '@/utils/tools.js';
+import { petImg } from '@/utils/tools.js';
 
 export default function CurrentPet() {
   const [currentPet, setCurrentPet] = useState({ name: '', type: '' });
@@ -26,14 +26,14 @@ export default function CurrentPet() {
 
     setCurrentPet(pet);
 
-    let petImg = petDictionary[pet.type]?.[pet.level] || "/Emoji/Melt Emoji.gif";
+    let petSrc = petImg(pet.type, pet.level, pet.xp);
     if (pet.type == "egg") {
       if (pet.xp >= 5) {
-        petImg = "/Egg Pet/Egg 2.png";
+        petSrc = "/Egg Pet/Egg 2.png";
       }
     }
 
-    setImgSrc(petImg);
+    setImgSrc(petSrc);
   }, [pets, userInfo]);
 
   return (

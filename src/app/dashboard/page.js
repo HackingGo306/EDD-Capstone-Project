@@ -12,6 +12,7 @@ import ResponsiveAppBar from "@/components/navbar/navbar";
 import DashboardGrid from "@/components/dashboard grid/dashboardGrid";
 import ChoosePetPopup from "@/components/choosepetpopup/choosepetpopup";
 import { RefreshContext } from "@/utils/contexts";
+import { VAPID_PUBLIC_KEY } from "@/utils/config";
 
 export default function Settings() {
 
@@ -19,6 +20,32 @@ export default function Settings() {
     if (sessionStorage.getItem("login")) return;
     sessionStorage.setItem("login", Date.now());
   }, []);
+
+  // useEffect(() => {
+  //   if ("serviceWorker" in navigator) {
+  //     const handleServiceWorker = async () => {
+  //       const register = await navigator.serviceWorker.register("/sw.js");
+
+  //       const subscription = await register.pushManager.subscribe({
+  //         userVisibleOnly: true,
+  //         applicationServerKey: VAPID_PUBLIC_KEY,
+  //       });
+
+  //       const res = await fetch("http://localhost:8000/subscribe", {
+  //         method: "POST",
+  //         body: JSON.stringify(subscription),
+  //         headers: {
+  //           "content-type": "application/json",
+  //         },
+  //       });
+
+  //       const data = await res.json();
+  //       console.log(data);
+  //     };
+  //     handleServiceWorker();
+  //   }
+  // }, [VAPID_PUBLIC_KEY]);
+
   const { triggerTimerRefresh } = useContext(RefreshContext);
 
   const [isWaterPopupOpen, setIsWaterPopupOpen] = useState(true);
@@ -32,7 +59,7 @@ export default function Settings() {
     <ThemeProvider theme={CUSTOM_THEME}>
       <div className={styles.page}>
         <div className={styles.Dashboard}>
-          <div className={`${styles.overlay} ${isTimerRunning ? styles.active : styles.hidden}`}/>
+          <div className={`${styles.overlay} ${isTimerRunning ? styles.active : styles.hidden}`} />
           <ResponsiveAppBar />
           <br />
           <DashboardGrid setIsWaterPopupOpen={setIsWaterPopupOpen} setIsEyePopupOpen={setIsEyePopupOpen} setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />

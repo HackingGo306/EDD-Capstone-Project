@@ -8,7 +8,7 @@ import { Button, CircularProgress } from "@mui/material";
 import ChooseConfetti from "../choose confetti/chooseconfetti";
 import { beginUserActivity, endUserActivity, skipUserActivity } from "@/api/ActivitiesAPI";
 import { UserInfoContext, PetsContext } from "@/utils/contexts";
-import { petDictionary } from "@/utils/tools";
+import { petImg } from "@/utils/tools";
 
 export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIsEvolvingPopupOpen, isTimerRunning, setIsTimerRunning }) {
 
@@ -78,9 +78,12 @@ export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIs
             if (isTimerRunning) {
               return <div />;
             } else if (isTimerFinished) {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} />;
+              return <img src={petImg(currentPet.type, currentPet.level, currentPet.xp)} alt="Pet" width={300} height={300} />;
             } else {
-              return <img src={petDictionary[currentPet.type]?.[currentPet.level]} alt="Pet" width={300} height={300} />;
+              if (currentPet.type === "emoji") {
+                return <img src="/Emoji Pet/Dry Eyes Emoji.gif" alt="Pet" width={300} height={300} />;
+              }
+              return <img src={petImg(currentPet.type, currentPet.level, currentPet.xp)} alt="Pet" width={300} height={300} />;
             }
           })()
         }

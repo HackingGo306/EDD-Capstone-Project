@@ -3,6 +3,7 @@
 const SERVER = process.env.NEXT_PUBLIC_SERVER;
 const NEXT_SERVER = process.env.NEXT_PUBLIC_NEXT_SERVER;
 const CK_EDITOR_LICENSE_KEY = process.env.NEXT_PUBLIC_CKEDITOR_LICENSE_KEY;
+const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY;
 
 import { createTheme } from '@mui/material/styles';
 
@@ -40,4 +41,4 @@ const CUSTOM_THEME = createTheme({
   },
 });
 
-export { SERVER, NEXT_SERVER, CK_EDITOR_LICENSE_KEY, CUSTOM_THEME };
+export { SERVER, NEXT_SERVER, CK_EDITOR_LICENSE_KEY, CUSTOM_THEME, VAPID_PUBLIC_KEY };
