@@ -60,17 +60,11 @@ export default function ChoosePetPopup({ setIsChoosePetPopupOpen }) {
               if (pet === "Cat") {
                 return <img className={styles.PetImage} src="/Cat Pet/Cat 1.png" alt="Cat" />
               } else if (pet === "Dog") {
-                return <div>
-                  <Typography variant="h1">Dog</Typography>
-                </div>
+                return <img className={styles.PetImage} src="/Dog Pet/Dog 1.png" alt="Dog" />
               } else if (pet === "Fly") {
-                return <div>
-                  <Typography variant="h1">Fly</Typography>
-                </div>
+                return <img className={styles.PetImage} src="/Fly Pet/Fly 1.png" alt="Fly" />
               } else if (pet === "Emoji") {
-                return <div>
-                  <Typography variant="h1">Emoji</Typography>
-                </div>
+                return <img className={styles.PetImage} src="/Emoji Pet/Smirk Emoji.gif" alt="Emoji" />
               }
             })()
           }

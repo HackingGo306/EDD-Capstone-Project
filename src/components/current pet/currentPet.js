@@ -27,12 +27,6 @@ export default function CurrentPet() {
     setCurrentPet(pet);
 
     let petSrc = petImg(pet.type, pet.level, pet.xp);
-    if (pet.type == "egg") {
-      if (pet.xp >= 5) {
-        petSrc = "/Egg Pet/Egg 2.png";
-      }
-    }
-
     setImgSrc(petSrc);
   }, [pets, userInfo]);
 

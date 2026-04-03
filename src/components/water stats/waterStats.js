@@ -34,7 +34,7 @@ export default function WaterStats() {
         if (activities[i].timestamp * 1000 < Date.now() - 6 * 24 * 60 * 60 * 1000) continue;
         if (activities[i].type === 'water') {
           const dayIndex = (new Date(activities[i].timestamp * 1000).getDay() - startDay + 6) % 7;
-          newWaterData[dayIndex] += activities[i].time
+          newWaterData[dayIndex] += activities[i].time;
         }
       }
 

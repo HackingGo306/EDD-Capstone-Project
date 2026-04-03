@@ -9,16 +9,16 @@ async function getUserActivities() {
   return { data: {} }
 }
 
-async function addUserActivity({type, time}) {
-  const res = await requestHandler(AxiosInstance.post(`/activities/add`, {type, time}));
+async function addUserActivity({ type, time }) {
+  const res = await requestHandler(AxiosInstance.post(`/activities/add`, { type, time }));
   if (res.status == 200) {
     return { data: res.data };
   }
   return { data: {} }
 }
 
-async function beginUserActivity({type}) {
-  const res = await requestHandler(AxiosInstance.post(`/activities/begin`, {type}));
+async function beginUserActivity({ type }) {
+  const res = await requestHandler(AxiosInstance.post(`/activities/begin`, { type }));
   if (res.status == 200) {
     return { data: res.data };
   }
@@ -26,15 +26,15 @@ async function beginUserActivity({type}) {
 }
 
 async function endUserActivity(waterDrank = 0) {
-  const res = await requestHandler(AxiosInstance.post(`/activities/end`, {waterDrank}));
+  const res = await requestHandler(AxiosInstance.post(`/activities/end`, { waterDrank }));
   if (res.status == 200) {
     return { data: res.data };
   }
   return { data: {} }
 }
 
-async function skipUserActivity({type}) {
-  const res = await requestHandler(AxiosInstance.post(`/activities/skip`, {type}));
+async function skipUserActivity({ type }) {
+  const res = await requestHandler(AxiosInstance.post(`/activities/skip`, { type }));
   if (res.status == 200) {
     return { data: res.data };
   }

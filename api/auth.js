@@ -276,5 +276,6 @@ Router.get("/logout", function (req, res) {
 
 module.exports = {
   autoSignin,
+  createNewPet,
   Router,
 };

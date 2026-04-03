@@ -25,16 +25,16 @@ async function requestHandler(request) {
 
 const petImg = (type, level, xp) => {
   if (type === "egg") {
-    if (xp >= 5) {
-      return `/Egg Pet/Egg 2.gif`;
+    if (xp >= 5 && level == 0) {
+      return `/Egg Pet/Egg cracked.png`;
     }
-    return `/Egg Pet/Egg ${level}.gif`;
+    return `/Egg Pet/Egg ${level}.png`;
   } else if (type === "cat") {
-    return `/Cat Pet/Cat ${level}.gif`;
+    return `/Cat Pet/Cat ${level}.png`;
   } else if (type === "dog") {
-    return `/Dog Pet/Dog ${level}.gif`;
+    return `/Dog Pet/Dog ${level}.png`;
     } else if (type === "fly") {
-      return `/Fly Pet/Fly ${level}.gif`;
+      return `/Fly Pet/Fly ${level}.png`;
     } else if (type === "emoji") {
     return `/Emoji Pet/Smirk Emoji.gif`;
   }

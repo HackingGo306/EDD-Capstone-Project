@@ -82,7 +82,8 @@ Router.post('/end', async (req, res) => { // TODO: handle water breaks that have
       let duration = Math.floor((Date.now() / 1000) - timestamp);
 
       if (type == "water") {
-        let drankAmount = req.body.drankAmount ?? 1;
+        let drankAmount = req.body.waterDrank ?? 1;
+        drankAmount = Number(drankAmount);
         if (!Number.isFinite(drankAmount)) {
           return res.status(400).send({
             success: false,

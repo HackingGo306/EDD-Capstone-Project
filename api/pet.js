@@ -1,7 +1,7 @@
 const express = require("express");
 const Router = express.Router();
 const pool = require("../model/pool");
-const { autoSignin } = require('./auth');
+const { autoSignin, createNewPet } = require('./auth');
 const generateRandomId = require("../utils/security").generateRandomId;
 
 Router.post("/choose", async (req, res) => {
@@ -65,7 +65,7 @@ Router.post("/choose", async (req, res) => {
       );
 
       res.status(200).send({
-        success: true, 
+        success: true,
         status: 200,
         message: "Pet selected!",
         data: { pet },
@@ -97,6 +97,57 @@ Router.get("/", async (req, res) => {
     }
     catch (err) {
       console.log("Fetching Pet Info Error:", err);
+      return res.status(500).send({
+        success: false,
+        status: 500,
+        message: "Unexpected error",
+        error: { reason: "Unexpected error" },
+      });
+    }
+  })
+});
+
+Router.post('/new', async (req, res) => {
+  autoSignin(req, res, async (userId) => {
+    try {
+      const connection = pool.promise();
+
+      const [petInfo] = await connection.query(`SELECT pet FROM users WHERE user_id = ?`, [userId]);
+      // Get pet level
+      const [petLevel] = await connection.query(`SELECT level FROM pets WHERE pet_id = ?`, [petInfo[0].pet]);
+
+      if (petInfo[0].pet != null && petLevel[0].level < 5) {
+        return res.status(400).send({
+          success: false,
+          status: 400,
+          message: "Not high enough level!",
+          error: { reason: "Not high enough level!" },
+        });
+      }
+
+      // Set pet back to level 4
+      await connection.query(`UPDATE pets SET level = 4 WHERE pet_id = ?`, [petInfo[0].pet]);
+
+      const petResult = await createNewPet({ user_id: userId });
+
+      if (!petResult.success) {
+        return res.status(500).send({
+          success: false,
+          status: 500,
+          message: "Error creating pet",
+          error: { reason: "Error creating pet" },
+        });
+      }
+
+      res.status(200).send({
+        success: true,
+        status: 200,
+        message: "New pet created!",
+        data: petResult.data,
+      });
+    }
+    catch (err) {
+      console.log("Creating New Pet Error:", err);
       return res.status(500).send({
         success: false,
         status: 500,

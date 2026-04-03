@@ -17,4 +17,12 @@ async function choosePet({ pet, petName }) {
   return { data: {} }
 }
 
-export { getPetInfo, choosePet };
+async function newPet() {
+  const res = await requestHandler(AxiosInstance.post(`/pet/new`));
+  if (res.status == 200) {
+    return { data: res.data };
+  }
+  return { data: {} }
+}
+
+export { getPetInfo, choosePet, newPet };
