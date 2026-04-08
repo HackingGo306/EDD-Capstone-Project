@@ -15,14 +15,6 @@ async function requestHandler(request) {
   }
 }
 
-// const petDictionary = {
-//   egg: ["/Egg Pet/Egg 1.png", "/Egg Pet/Egg 2.png", "/Egg Pet/Egg 3.png"],
-//   cat: ["", "/Cat Pet/Cat 1.png", "/Cat Pet/Cat 2.png", "/Cat Pet/Cat 3.png", "/Cat Pet/Cat 4.png"],
-//   dog: ["", "/Dog Pet/Dog 1.png", "/Dog Pet/Dog 2.png", "/Dog Pet/Dog 3.png", "/Dog Pet/Dog 4.png"],
-//   fly: ["", "/Fly Pet/Fly 1.png", "/Fly Pet/Fly 2.png", "/Fly Pet/Fly 3.png", "/Fly Pet/Fly 4.png"],
-//   emoji: ["", "/Emoji Pet/Smirk Emoji.png"],
-// };
-
 const petImg = (type, level, xp) => {
   if (type === "egg") {
     if (xp >= 5 && level == 0) {

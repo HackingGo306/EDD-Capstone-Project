@@ -15,7 +15,7 @@ export default function QuoteHolder() {
             "I am a jelly, and there is no larger jelly than I."
           </Typography>
           <Typography sx={{color: 'black', fontWeight: '525'}}>
-            - Jell'oceronie
+            - Jell'o
           </Typography>
         </div>
       </Box>

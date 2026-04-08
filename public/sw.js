@@ -7,7 +7,7 @@ self.addEventListener("push", (event) => {
 
   const notificationOptions = {
     body: body,
-    tag: "unique-tag", // Use a unique tag to prevent duplicate notifications
+    tag: "unique-tag" + Date.now(), // Use a unique tag to prevent duplicate notifications
     icon: icon,
     data: {
       url: url, // Replace with the desired URL for redirecting user to the desired page

@@ -6,8 +6,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { RefreshContext } from "@/utils/contexts";
 import { List, ListItem, ListItemText } from '@mui/material'
+import { sendEyeNotification, sendStretchNotification, sendWaterNotification } from "@/api/NotificationsAPI";
 
-export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpen, setIsStretchPopupOpen }) {
+export default function BreakInformation({ isEyePopupOpen, isWaterPopupOpen, isStretchPopupOpen, setIsEyePopupOpen, setIsWaterPopupOpen, setIsStretchPopupOpen }) {
   const [nextWaterTime, setNextWaterTime] = useState(0);
   const [nextEyeTime, setNextEyeTime] = useState(0);
   const [nextStretchTime, setNextStretchTime] = useState(0);
@@ -100,6 +101,18 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
     };
   }, [userInfo, nextEyeTime, nextWaterTime, nextStretchTime]);
 
+  useEffect(() => {
+    if (isEyePopupOpen) sendEyeNotification();
+  }, [isEyePopupOpen]);
+
+  useEffect(() => {
+    if (isWaterPopupOpen) sendWaterNotification();
+  }, [isWaterPopupOpen]);
+
+  useEffect(() => {
+    if (isStretchPopupOpen) sendStretchNotification();
+  }, [isStretchPopupOpen]);
+
   return (
     <div className={styles.BreakInformation}>
       <div className={styles.BreakInfoHeader}>
@@ -111,7 +124,7 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
       <List dense>
         <ListItem
           sx={{ bgcolor: (theme) => alpha(theme.palette.primary.main, 0.75), borderRadius: '1rem', mb: 1, py: 0 }}
-          secondaryAction={<RestartAltIcon sx={{ ':hover': { cursor: 'pointer' } }} />}
+          secondaryAction={<RestartAltIcon onClick={() => setIsWaterPopupOpen(true)} onContextMenu={(e) => { e.preventDefault(); setNextWaterTime(Date.now() / 1000 + 10) }} sx={{ ':hover': { cursor: 'pointer' } }} />}
         >
           <ListItemText
             primary="Water Break"
@@ -120,7 +133,7 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
         </ListItem>
         <ListItem
           sx={{ bgcolor: (theme) => alpha(theme.palette.primary.main, 0.75), borderRadius: '1rem', mb: 1, py: 0 }}
-          secondaryAction={<RestartAltIcon sx={{ ':hover': { cursor: 'pointer' } }} />}
+          secondaryAction={<RestartAltIcon onClick={() => setIsStretchPopupOpen(true)} onContextMenu={(e) => { e.preventDefault(); setNextStretchTime(Date.now() / 1000 + 10) }} sx={{ ':hover': { cursor: 'pointer' } }} />}
         >
           <ListItemText
             primary="Stretch Break"
@@ -129,7 +142,7 @@ export default function BreakInformation({ setIsEyePopupOpen, setIsWaterPopupOpe
         </ListItem>
         <ListItem
           sx={{ bgcolor: (theme) => alpha(theme.palette.primary.main, 0.75), borderRadius: '1rem', py: 0 }}
-          secondaryAction={<RestartAltIcon sx={{ ':hover': { cursor: 'pointer' } }} />}
+          secondaryAction={<RestartAltIcon onClick={() => setIsEyePopupOpen(true)} onContextMenu={(e) => { e.preventDefault(); setNextEyeTime(Date.now() / 1000 + 10) }} sx={{ ':hover': { cursor: 'pointer' } }} />}
         >
           <ListItemText
             primary="Eye Break"

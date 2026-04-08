@@ -10,7 +10,7 @@ import WeekInfo from "../week info/weekInfo";
 import CurrentPet from "../current pet/currentPet";
 import WaterStats from "../water stats/waterStats";
 
-export default function DashboardGrid({ setIsWaterPopupOpen, setIsEyePopupOpen, setIsStretchPopupOpen, setIsEvolvingPopupOpen, setIsChoosePetPopupOpen }) {
+export default function DashboardGrid({ isEyePopupOpen, isWaterPopupOpen, isStretchPopupOpen, setIsWaterPopupOpen, setIsEyePopupOpen, setIsStretchPopupOpen, setIsEvolvingPopupOpen, setIsChoosePetPopupOpen }) {
   return (
     <Box
       className={styles.DashboardGrid}
@@ -40,7 +40,7 @@ export default function DashboardGrid({ setIsWaterPopupOpen, setIsEyePopupOpen, 
       </GridItem>
       <GridItem columnSpan={1}>
         <Box sx={{ border: '1px solid #ccc', borderRadius: '8px', padding: 1, height: 'fit-content' }}>
-          <BreakInformation setIsEyePopupOpen={setIsEyePopupOpen} setIsWaterPopupOpen={setIsWaterPopupOpen} setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />
+          <BreakInformation isEyePopupOpen={isEyePopupOpen} isWaterPopupOpen={isWaterPopupOpen} isStretchPopupOpen={isStretchPopupOpen} setIsEyePopupOpen={setIsEyePopupOpen} setIsWaterPopupOpen={setIsWaterPopupOpen} setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />
         </Box>
       </GridItem>
       <GridItem columnSpan={2}>

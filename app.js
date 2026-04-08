@@ -100,7 +100,7 @@ app.use('/pet', petAPI);
 
 
 const vapidKeys = {
-  publicKey: process.env.VAPID_PUBLIC_KEY,
+  publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
   privateKey: process.env.VAPID_PRIVATE_KEY,
 };
 
@@ -117,16 +117,16 @@ app.post("/subscribe", (req, res) => {
   const subscription = req.body;
   subscriptions.push(subscription);
 
-  res.status(201).json({status: "success"});
+  res.status(200).json({status: "success"});
 });
 
 app.post("/send-notification", (req, res) => {
   const notificationPayload = {
-      title: "New Notification",
-      body: "This is a new notification",
-      icon: "https://some-image-url.jpg",
+      title: req.body.title || "Water Reminder",
+      body: req.body.body || "Don't forget to drink water!",
+      icon: req.body.icon || "",
       data: {
-        url: "https://example.com",
+        url: req.body.url || "http://localhost:8000/dashboard",
       },
   };
 
@@ -135,7 +135,7 @@ app.post("/send-notification", (req, res) => {
       webpush.sendNotification(subscription, JSON.stringify(notificationPayload))
     )
   )
-    .then(() => res.status(200).json({ message: "Notification sent successfully." }))
+    .then(() => res.status(200).json({ }))
     .catch((err) => {
       console.error("Error sending notification");
       res.sendStatus(500);
