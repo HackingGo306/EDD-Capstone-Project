@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon app.js",
-    "build": "next build",
+    "build": "node app.js",
     "start": "node app.js",
     "lint": "eslint"
   },
