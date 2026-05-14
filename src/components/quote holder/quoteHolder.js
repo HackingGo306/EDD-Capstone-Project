@@ -12,10 +12,10 @@ export default function QuoteHolder() {
         <Typography variant="h6" sx={{color: 'black'}}>Quote of the Day:</Typography>
         <div className={styles.QuoteContent}>
           <Typography sx={{color: 'black', fontWeight: '525'}}>
-            "I am a jelly, and there is no larger jelly than I."
+            "My fake plants died because I did not pretend to water them."
           </Typography>
           <Typography sx={{color: 'black', fontWeight: '525'}}>
-            - Jell'o
+            - Mitch Hedberg
           </Typography>
         </div>
       </Box>
