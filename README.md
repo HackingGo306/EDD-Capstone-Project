@@ -1,4 +1,4 @@
-This is the Engineering Design and Development Capstone Project by the Mandelbros.
+This is the Engineering Design and Development Capstone group project with Cameron Jiang and Audrey Huynh. Due to conveniences and technical difficulties, we worked synchronously using Liveshare hosted on Cameron’s computer, through which Audrey's computer connected into Cameron’s computer and they were coding in his environment together. Thus, Audrey's contributions were directly added to Cameron's computer, and he subsequently uploaded the entirely of the project to GitHub on the group's behalf; this comment acknowledges that this was a group project even though GitHub was not able to explicitly document Audrey's contributions.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
