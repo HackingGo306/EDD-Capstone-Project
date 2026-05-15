@@ -68,14 +68,14 @@ app.use((req, res, next) => {
   next();
 });
 app.use(helmet.frameguard({ action: "SAMEORIGIN" }));
-const SERVER_ORIGIN = process.env.NEXT_PUBLIC_SERVER || "http://localhost:8000";
 const cspOptions = {
   directives: {
-    defaultSrc: ["'self'", SERVER_ORIGIN],
-    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", SERVER_ORIGIN],
-    styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", SERVER_ORIGIN],
-    fontSrc: ["'self'", "https://fonts.gstatic.com", "data:", SERVER_ORIGIN],
-    connectSrc: ["'self'", "https:", SERVER_ORIGIN],
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+    styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+    fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+    connectSrc: ["'self'", "https:"],
+    workerSrc: ["'self'", "blob:"],
   }
 };
 if (process.env.NODE_ENV === "production") {
