@@ -12,7 +12,7 @@ import ResponsiveAppBar from "@/components/navbar/navbar";
 import DashboardGrid from "@/components/dashboard grid/dashboardGrid";
 import ChoosePetPopup from "@/components/choosepetpopup/choosepetpopup";
 import { RefreshContext } from "@/utils/contexts";
-import { VAPID_PUBLIC_KEY } from "@/utils/config";
+import { VAPID_PUBLIC_KEY, NEXT_PUBLIC_SERVER } from "@/utils/config";
 
 export default function Dashboard() {
 
@@ -31,7 +31,7 @@ export default function Dashboard() {
           applicationServerKey: VAPID_PUBLIC_KEY,
         });
 
-        fetch("http://localhost:8000/subscribe", {
+        fetch(`${NEXT_PUBLIC_SERVER}/subscribe`, {
           method: "POST",
           body: JSON.stringify(subscription),
           headers: {
