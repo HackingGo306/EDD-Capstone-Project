@@ -68,17 +68,17 @@ app.use((req, res, next) => {
   next();
 });
 app.use(helmet.frameguard({ action: "SAMEORIGIN" }));
-const cspOptions = {
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-    styleSrc: ["'self'", "'unsafe-inline'"],
-    imgSrc: ["'self'", "data:", "https:"],
-    connectSrc: ["'self'", "https:"],
-  },
-};
+// const cspOptions = {
+//   directives: {
+//     defaultSrc: ["'self'"],
+//     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+//     styleSrc: ["'self'", "'unsafe-inline'"],
+//     imgSrc: ["'self'", "data:", "https:"],
+//     connectSrc: ["'self'", "https:"],
+//   },
+// };
 if (process.env.NODE_ENV === "production") {
-  app.use(helmet.contentSecurityPolicy(cspOptions));
+  app.use(helmet.contentSecurityPolicy(false));
 }
 
 //body parser
