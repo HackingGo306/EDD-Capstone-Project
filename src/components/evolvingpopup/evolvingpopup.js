@@ -44,7 +44,7 @@ export default function EvolvingPopup({ setIsEvolvingPopupOpen, setIsChoosePetPo
     }
 
 
-  }, [userInfo, pets]);
+  }, [userInfo, pets, refreshPets, refreshUserInfo, setIsChoosePetPopupOpen, setIsTimerRunning, setIsEvolvingPopupOpen]);
 
   return (
     <Paper className={styles.EvolvingPopup} sx={{ backgroundColor: (theme) => theme.palette.primary.main, boxShadow: `0px 0.5rem 5rem rgba(114, 201, 255, 0.9)`, }}>
