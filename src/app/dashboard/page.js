@@ -63,13 +63,13 @@ export default function Dashboard() {
 
           {isChoosePetPopupOpen && <ChoosePetPopup setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />}
 
-          {isWaterPopupOpen && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
+          {(isWaterPopupOpen && !isEvolvingPopupOpen && !isChoosePetPopupOpen && !isEyePopupOpen) && <WaterPopup setIsWaterPopupOpen={setIsWaterPopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
 
-          {isEyePopupOpen && <EyePopup isTimerRunning={isTimerRunning} setIsTimerRunning={setIsTimerRunning} setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
+          {(isEyePopupOpen && !isEvolvingPopupOpen && !isChoosePetPopupOpen) && <EyePopup isTimerRunning={isTimerRunning} setIsTimerRunning={setIsTimerRunning} setIsEyePopupOpen={setIsEyePopupOpen} triggerTimerRefresh={triggerTimerRefresh} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} />}
 
-          {isStretchPopupOpen && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} triggerTimerRefresh={triggerTimerRefresh} />}
+          {(isStretchPopupOpen && !isEvolvingPopupOpen && !isChoosePetPopupOpen && !isEyePopupOpen && !isWaterPopupOpen) && <StretchPopup setIsStretchPopupOpen={setIsStretchPopupOpen} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} triggerTimerRefresh={triggerTimerRefresh} />}
 
-          {isEvolvingPopupOpen && <EvolvingPopup setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />}
+          {isEvolvingPopupOpen && <EvolvingPopup setIsTimerRunning={setIsTimerRunning} setIsEvolvingPopupOpen={setIsEvolvingPopupOpen} setIsChoosePetPopupOpen={setIsChoosePetPopupOpen} />}
         </div>
       </div>
     </ThemeProvider>

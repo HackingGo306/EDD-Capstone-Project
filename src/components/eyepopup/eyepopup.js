@@ -32,7 +32,7 @@ export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIs
       setProgress((prevProgress) => {
         if (prevProgress >= 100) {
           clearInterval(interval);
-          setIsTimerRunning(false);
+          setTimeout(() => { setIsTimerRunning(false) }, 100);
           setIsTimerFinished(true);
           return 100;
         }
@@ -44,7 +44,7 @@ export default function EyePopup({ setIsEyePopupOpen, triggerTimerRefresh, setIs
     beginUserActivity({ type: "eye" });
 
     return () => clearInterval(interval);
-  }, [progress]);
+  }, [setIsTimerRunning]);
 
   useEffect(() => {
     async function checkProgress() {

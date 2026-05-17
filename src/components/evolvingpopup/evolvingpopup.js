@@ -10,7 +10,7 @@ import { PetsContext, UserInfoContext } from "@/utils/contexts";
 import { petImg } from "@/utils/tools";
 import { newPet } from "@/api/PetAPI";
 
-export default function EvolvingPopup({ setIsEvolvingPopupOpen, setIsChoosePetPopupOpen, openChoosePet }) {
+export default function EvolvingPopup({ setIsEvolvingPopupOpen, setIsChoosePetPopupOpen, openChoosePet, setIsTimerRunning }) {
 
   const { userInfo, refreshUserInfo } = useContext(UserInfoContext);
   const { pets, refreshPets } = useContext(PetsContext);
@@ -34,6 +34,7 @@ export default function EvolvingPopup({ setIsEvolvingPopupOpen, setIsChoosePetPo
     setCurrentPet(userPet);
 
     if (userPet.level == 1) {
+      setIsTimerRunning(false);
       setIsChoosePetPopupOpen(true);
     }
     else if (userPet.level == 5) {

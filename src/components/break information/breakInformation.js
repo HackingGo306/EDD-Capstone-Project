@@ -63,9 +63,9 @@ export default function BreakInformation({ isEyePopupOpen, isWaterPopupOpen, isS
     const prevEyeTime = Math.max(latestEyeBreak.timestamp, sessionEyeTime);
     const prevStretchTime = Math.max(latestStretchBreak.timestamp, sessionStretchTime);
 
-    setNextEyeTime(prevEyeTime + 20 * 60);
+    setNextEyeTime(prevEyeTime + 15 * 60);
     setNextWaterTime(prevWaterTime + 20 * 60);
-    setNextStretchTime(prevStretchTime + 20 * 60);
+    setNextStretchTime(prevStretchTime + 25 * 60);
 
   }, [userInfo, timerRefresh]);
 
