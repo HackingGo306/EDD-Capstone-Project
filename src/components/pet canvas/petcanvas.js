@@ -133,10 +133,9 @@ export default function PetCanvas() {
         ctx.fillStyle = "white";
         ctx.fillText(selectedPetRef.current.name, 262.5, 10, 75);
 
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(219, 109, 255, 0.8)";
-        ctx.rect(240, 17, 45, 45);
-        ctx.fill();
+        const selectedPetImage = new Image();
+        selectedPetImage.src = petImg(selectedPetRef.current.type, selectedPetRef.current.level, selectedPetRef.current.xp);
+        ctx.drawImage(selectedPetImage, 240, 17, 45, 45);
 
         ctx.font = "8px Arial";
         ctx.textAlign = "center";
