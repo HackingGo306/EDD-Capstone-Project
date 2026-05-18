@@ -23,7 +23,7 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh, s
   const { userInfo, refreshUserInfo } = useContext(UserInfoContext);
   const { pets, refreshPets } = useContext(PetsContext);
   const [currentPet, setCurrentPet] = useState({ type: '', level: 0 });
-
+  const [cameraDisabled, setCameraDisabled] = useState(false);
   const [model, setModel] = useState(undefined);
   const cameraRef = useRef(null);
 
@@ -50,11 +50,15 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh, s
   useEffect(() => {
     // get camera stream and load coco model
     if (!model) return;
+    if (!cameraRef.current) return;
     if (isTimerRunning) {
       const getPredictions = async () => {
         const b64data = cameraRef.current.getScreenshot();
-        if (!b64data) return;
+        if (!b64data) return
         const { videoWidth, videoHeight } = cameraRef.current.video;
+        if (!videoWidth || !videoHeight) {
+          return;
+        }
         const htmlImage = new Image();
         htmlImage.src = b64data;
         htmlImage.width = videoWidth;
@@ -144,10 +148,24 @@ export default function WaterPopup({ setIsWaterPopupOpen, triggerTimerRefresh, s
           { // Progress Circle
             isTimerRunning &&
             <div>
-              <Webcam className={styles.WebcamView} ref={cameraRef} width={"50%"} mirrored={true} audio={false} />
+              <Webcam className={styles.WebcamView} ref={cameraRef} width={"50%"} mirrored={true} audio={false}
+                onUserMedia={() => setCameraDisabled(false)}
+                onUserMediaError={() => {
+                  setCameraDisabled(true);
+                }}
+              />
               <br />
               <Button sx={{ ml: "0.5rem" }} variant="contained" color="secondary" onClick={handleSkip}>Skip</Button>
             </div>
+          }
+
+          {
+            (cameraDisabled && isTimerRunning) && (<Button sx={{ mt: "0.5rem" }} variant="contained" color="secondary" onClick={() => {
+              setIsTimerFinished(true);
+              setIsTimerRunning(false);
+            }}>
+              I&apos;m finished
+            </Button>)
           }
 
           { // Celebrate and Done Buttons

@@ -58,7 +58,7 @@ export default function UserStats() {
     }
   }, [userActivities]);
 
-  const valueFormatter = (value) => `${value} min`;
+  const valueFormatter = (value) => `${value.toFixed(2)} min`;
 
   return (
     <div>
